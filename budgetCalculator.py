@@ -1,5 +1,9 @@
 import numpy as np
 import math
-from budgetCalculatorFunctions import QNA
+from budgetCalculatorFunctions import getChar
+from budgetCalculatorFunctions import getFloat
 
-QNA()
+validAnswers = ['weekly', 'biweekly', 'bi weekly', 'bi weekly', 'twice a month', 'monthly']
+payRate = getChar('\nHow often do you get paid?', validAnswers)
+
+payCheckAmount = getFloat('\nOn average, how much is each paycheck?')
