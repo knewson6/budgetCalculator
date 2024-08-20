@@ -54,15 +54,79 @@ def getIncome():
 def getExpenses():
     expenses = {}
 
-    print('\nWe are now going to ask you for each of your expenses, and their related cost')
-
     while True:
-        expenseName = input('\nEnter the name of the expense (enter "done" if your are finished)\n\t')
+        expenseName = input('\nEnter the name of an expense (enter "done" if your are finished)\n\t')
 
         if expenseName == 'done':
             break
 
-        expenseCost = getFloat('How much does this expense cost?')
+        expenseCost = getFloat('\nHow much does this expense cost?')
+
         expenses[expenseName] = expenseCost
 
     return expenses
+
+def getTaxDeductibleSavings():
+    taxDeductibleSavings = {}
+
+    while True:
+        taxDeductibleSavingsName = input('\nEnter the name of any the tax deductible savings account(s) (enter "done" if you are finished)\n\t')
+
+        if taxDeductibleSavingsName == 'done':
+            break
+
+        taxDeductibleSavingsCost = getFloat('\nHow much do you put away into this account?\n\t')
+
+        taxDeductibleSavings[taxDeductibleSavingsName] = taxDeductibleSavingsCost
+
+    return taxDeductibleSavings
+
+def getSavings():
+    savings = {}
+
+    while True:
+        savingsName = input('\nEnter the name of any the tax deductible savings account(s) (enter "done" if you are finished)\n\t')
+
+        if savingsName == 'done':
+            break
+
+        savingsCost = getFloat('\nHow much do you put away into this account?\n\t')
+
+        savings[savingsName] = savingsCost
+
+    return savings
+
+def federalTax(monthlyIncome, taxDeductibleSavings):
+
+    preTaxedIncome = (monthlyIncome * 12) - taxDeductibleSavings
+    fedTaxedIncome = 0
+
+    if preTaxedIncome <= 55867:
+        fedTaxedIncome = preTaxedIncome * 0.85
+    elif 55867 < preTaxedIncome <= 111733:
+        fedTaxedIncome = (55867 * 0.85) + ((preTaxedIncome - 55867) * 0.795)
+    elif 111733 < preTaxedIncome <= 173205:
+        fedTaxedIncome = (55867 * 0.85) + ((preTaxedIncome - 55867) * 0.795) + ((preTaxedIncome - 111733) * 0.74)
+    elif 173205 < preTaxedIncome <= 256752:
+        fedTaxedIncome = (55867 * 0.85) + ((preTaxedIncome - 55867) * 0.795) + ((preTaxedIncome - 111733) * 0.74) + ((preTaxedIncome - 256752) * 0.71)
+    elif preTaxedIncome > 256752:
+        fedTaxedIncome = (55867 * 0.85) + ((preTaxedIncome - 55867) * 0.795) + ((preTaxedIncome - 111733) * 0.74) + ((preTaxedIncome - 256752) * 0.71) + ((preTaxedIncome - 256752) * 0.67)
+
+    return fedTaxedIncome
+
+def provincialTax(fedTaxedIncome):
+
+    taxedIncome = 0
+
+    if fedTaxedIncome <= 51446:
+        taxedIncome = fedTaxedIncome * 0.0505
+    elif 51446 < fedTaxedIncome <= 102894:
+        taxedIncome = (fedTaxedIncome * 0.9495) + ((fedTaxedIncome - 51446) * 0.9085)
+    elif 102894 < fedTaxedIncome <= 150000:
+        taxedIncome = (fedTaxedIncome * 0.9495) + ((fedTaxedIncome - 51446) * 0.9085) + ((fedTaxedIncome - 102894) * 0.8884)
+    elif 150000 < fedTaxedIncome <= 220000:
+        taxedIncome = (fedTaxedIncome * 0.9495) + ((fedTaxedIncome - 51446) * 0.9085) + ((fedTaxedIncome - 102894) * 0.8884) + ((fedTaxedIncome - 150000) * 0.8784)
+    elif fedTaxedIncome > 220000:
+        taxedIncome = (fedTaxedIncome * 0.9495) + ((fedTaxedIncome - 51446) * 0.9085) + ((fedTaxedIncome - 102894) * 0.8884) + ((fedTaxedIncome - 150000) * 0.8784) + ((fedTaxedIncome - 220000) * 0.8684)
+
+    return taxedIncome
