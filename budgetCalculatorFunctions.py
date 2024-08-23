@@ -31,23 +31,23 @@ def getIncome():
     payCheckAmount = getFloat('\nOn average, how much is each paycheck?')
 
     validAnswers2 = ['yes', 'no']
-    additionalIncome = getChar('\nDo you have any other streams of income?', validAnswers2).lower()
+    otherIncome = getChar('\nDo you have any other streams of income?', validAnswers2).lower()
 
-    if additionalIncome == 'yes':
-        additionalIncomeAmount = getFloat('\nOn average, how much do you make with the other streams of income per month?')
+    if otherIncome == 'yes':
+        otherIncomeAmount = getFloat('\nOn average, how much do you make with the other streams of income per month?')
     else:
-        additionalIncomeAmount = 0
+        otherIncomeAmount = 0
 
     monthlyIncome = 0
 
     if payRate == 'weekly':
-        monthlyIncome = (payCheckAmount * 52 / 12) + additionalIncomeAmount
+        monthlyIncome = (payCheckAmount * 52 / 12) + otherIncomeAmount
     elif payRate == 'biweekly':
-        monthlyIncome = (payCheckAmount * 26 / 12) + additionalIncomeAmount
+        monthlyIncome = (payCheckAmount * 26 / 12) + otherIncomeAmount
     elif payRate == 'twice a month':
-        monthlyIncome = (payCheckAmount * 2) + additionalIncomeAmount
+        monthlyIncome = (payCheckAmount * 2) + otherIncomeAmount
     elif payRate == 'monthly':
-        monthlyIncome = payCheckAmount + additionalIncomeAmount
+        monthlyIncome = payCheckAmount + otherIncomeAmount
 
     return monthlyIncome
 
@@ -75,7 +75,7 @@ def getTaxDeductibleSavings():
         if taxDeductibleSavingsName == 'done':
             break
 
-        taxDeductibleSavingsCost = getFloat('\nHow much do you put away into this account?\n\t')
+        taxDeductibleSavingsCost = getFloat('\nHow much do you put away into this account?')
 
         taxDeductibleSavings[taxDeductibleSavingsName] = taxDeductibleSavingsCost
 
@@ -85,12 +85,12 @@ def getSavings():
     savings = {}
 
     while True:
-        savingsName = input('\nEnter the name of any the tax deductible savings account(s) (enter "done" if you are finished)\n\t')
+        savingsName = input('\nEnter the name of any savings account(s) (enter "done" if you are finished)\n\t')
 
         if savingsName == 'done':
             break
 
-        savingsCost = getFloat('\nHow much do you put away into this account?\n\t')
+        savingsCost = getFloat('\nHow much do you put away into this account?')
 
         savings[savingsName] = savingsCost
 
@@ -98,19 +98,19 @@ def getSavings():
 
 def federalTax(monthlyIncome, taxDeductibleSavings):
 
-    preTaxedIncome = (monthlyIncome * 12) - taxDeductibleSavings
+    income = (monthlyIncome * 12) - taxDeductibleSavings
     fedTaxedIncome = 0
 
-    if preTaxedIncome <= 55867:
-        fedTaxedIncome = preTaxedIncome * 0.85
-    elif 55867 < preTaxedIncome <= 111733:
-        fedTaxedIncome = (55867 * 0.85) + ((preTaxedIncome - 55867) * 0.795)
-    elif 111733 < preTaxedIncome <= 173205:
-        fedTaxedIncome = (55867 * 0.85) + ((preTaxedIncome - 55867) * 0.795) + ((preTaxedIncome - 111733) * 0.74)
-    elif 173205 < preTaxedIncome <= 256752:
-        fedTaxedIncome = (55867 * 0.85) + ((preTaxedIncome - 55867) * 0.795) + ((preTaxedIncome - 111733) * 0.74) + ((preTaxedIncome - 256752) * 0.71)
-    elif preTaxedIncome > 256752:
-        fedTaxedIncome = (55867 * 0.85) + ((preTaxedIncome - 55867) * 0.795) + ((preTaxedIncome - 111733) * 0.74) + ((preTaxedIncome - 256752) * 0.71) + ((preTaxedIncome - 256752) * 0.67)
+    if income <= 55867:
+        fedTaxedIncome = income * 0.85
+    elif 55867 < income <= 111733:
+        fedTaxedIncome = (55867 * 0.85) + ((income - 55867) * 0.795)
+    elif 111733 < income <= 173205:
+        fedTaxedIncome = (55867 * 0.85) + ((income - 55867) * 0.795) + ((income - 111733) * 0.74)
+    elif 173205 < income <= 256752:
+        fedTaxedIncome = (55867 * 0.85) + ((income - 55867) * 0.795) + ((income - 111733) * 0.74) + ((income - 256752) * 0.71)
+    elif income > 256752:
+        fedTaxedIncome = (55867 * 0.85) + ((income - 55867) * 0.795) + ((income - 111733) * 0.74) + ((income - 256752) * 0.71) + ((income - 256752) * 0.67)
 
     return fedTaxedIncome
 
