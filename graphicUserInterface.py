@@ -1,6 +1,7 @@
 import tkinter as tk
-from tkinter import ttk, StringVar, OptionMenu
-from budgetCalculatorFunctions import federalTax, ontarioTax
+from tkinter import *
+from tkinter import ttk
+from guiFunctions import frames
 
 
 def graphicUI():
@@ -11,20 +12,8 @@ def graphicUI():
     root.configure(bg='light gray')
 
     def mainScreen():
-        for widget in root.winfo_children():
-            widget.destroy()
 
-        headFrame = tk.Frame(root, bg='gray75', width=1200, height=150)
-        headFrame.pack(fill='x', side='top')
-        headTitle = tk.Label(headFrame, text="Welcome To Your Financial Aid", font=('Times New Roman', 22), bg='gray75',
-                             fg='black')
-        headTitle.pack(padx=0, pady=20)
-
-        divider = ttk.Separator(root, orient='horizontal')
-        divider.pack(fill='x')
-
-        buttonFrame = tk.Frame(root, bg='floral white', width=1200, height=680)
-        buttonFrame.pack(fill='x', side='bottom')
+        frames(root)
 
         budgetPlannerButton = tk.Button(root, text="Budget Planner", font=('Times New Roman', 18), bg='gray85' ,command=budgetPlanner)
         budgetPlannerButton.place(x=50, y=150, height=200, width=350)
@@ -54,19 +43,8 @@ def graphicUI():
 
 
     def budgetPlanner():
-        for widget in root.winfo_children():
-            widget.destroy()
 
-        headFrame = tk.Frame(root, bg='gray75', width=1200, height=150)
-        headFrame.pack(fill='x', side='top')
-        headTitle = tk.Label(headFrame, text="Budget Planner", font=('Times New Roman', 22), bg='gray75',fg='black')
-        headTitle.pack(padx=0, pady=20)
-
-        divider = ttk.Separator(root, orient='horizontal')
-        divider.pack(fill='x')
-
-        buttonFrame = tk.Frame(root, bg='floral white', width=1200, height=680)
-        buttonFrame.pack(fill='x', side='bottom')
+        frames(root)
 
         createFileButton = tk.Button(root, text="Create an Excel File", font=('Times New Roman', 16), bg='gray85', command=createFile)
         createFileButton.place(x=50, y=200, height=200, width=350)
@@ -81,55 +59,22 @@ def graphicUI():
         backButton.place(x=1050, y=600, height=50, width=100)
 
     def createFile():
-        for widget in root.winfo_children():
-            widget.destroy()
 
-        headFrame = tk.Frame(root, bg='gray75', width=1200, height=150)
-        headFrame.pack(fill='x', side='top')
-        headTitle = tk.Label(headFrame, text="Budget Planner", font=('Times New Roman', 22), bg='gray75', fg='black')
-        headTitle.pack(padx=0, pady=20)
-
-        divider = ttk.Separator(root, orient='horizontal')
-        divider.pack(fill='x')
-
-        buttonFrame = tk.Frame(root, bg='floral white', width=1200, height=680)
-        buttonFrame.pack(fill='x', side='bottom')
+        frames(root)
 
         backButton = tk.Button(root, text="Back", font=('Times New Roman', 12), command=budgetPlanner)
         backButton.place(x=1050, y=600, height=50, width=100)
 
     def editFile():
-        for widget in root.winfo_children():
-            widget.destroy()
 
-        headFrame = tk.Frame(root, bg='gray75', width=1200, height=150)
-        headFrame.pack(fill='x', side='top')
-        headTitle = tk.Label(headFrame, text="Budget Planner", font=('Times New Roman', 22), bg='gray75', fg='black')
-        headTitle.pack(padx=0, pady=20)
-
-        divider = ttk.Separator(root, orient='horizontal')
-        divider.pack(fill='x')
-
-        buttonFrame = tk.Frame(root, bg='floral white', width=1200, height=680)
-        buttonFrame.pack(fill='x', side='bottom')
+        frames(root)
 
         backButton = tk.Button(root, text="Back", font=('Times New Roman', 12), command=budgetPlanner)
         backButton.place(x=1050, y=600, height=50, width=100)
 
     def noFile():
-        for widget in root.winfo_children():
-            widget.destroy()
 
-        headFrame = tk.Frame(root, bg='gray75', width=1200, height=150)
-        headFrame.pack(fill='x', side='top')
-        headTitle = tk.Label(headFrame, text="Budget Planner", font=('Times New Roman', 22), bg='gray75', fg='black')
-        headTitle.pack(padx=0, pady=20)
-
-        divider = ttk.Separator(root, orient='horizontal')
-        divider.pack(fill='x')
-
-        buttonFrame = tk.Frame(root, bg='floral white', width=1200, height=680)
-        buttonFrame.pack(fill='x', side='bottom')
+        frames(root)
 
         backButton = tk.Button(root, text="Back", font=('Times New Roman', 12), command=budgetPlanner)
         backButton.place(x=1050, y=600, height=50, width=100)
@@ -147,19 +92,8 @@ def graphicUI():
 
 
     def taxCalculator():
-        for widget in root.winfo_children():
-            widget.destroy()
 
-        headFrame = tk.Frame(root, bg='gray75', width=1200, height=150)
-        headFrame.pack(fill='x', side='top')
-        headTitle = tk.Label(headFrame, text="Income Tax Calculator", font=('Times New Roman', 22), bg='gray75', fg='black')
-        headTitle.pack(padx=0, pady=20)
-
-        divider = ttk.Separator(root, orient='horizontal')
-        divider.pack(fill='x')
-
-        buttonFrame = tk.Frame(root, bg='floral white', width=1200, height=680)
-        buttonFrame.pack(fill='x', side='bottom')
+        frames(root)
 
         backButton = tk.Button(root, text="Back", font=('Times New Roman', 12), command=mainScreen)
         backButton.place(x=1050, y=600, height=50, width=100)
@@ -167,11 +101,27 @@ def graphicUI():
         provinces = StringVar(root)
         provinces.set("Pick a Province or Territory")
         provinceMenu = OptionMenu(root, provinces ,"Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon")
-        provinceMenu.place(x=75, y=150, height=50, width=225)
+        provinceMenu.place(x=480, y=125, height=50, width=225)
 
+        monthlyIncomeLabel = tk.Label(root, text="Monthly Income \n\t\t $", font=('Times New Roman', 18), bg='white')
+        monthlyIncomeLabel.place(x=75, y=200)
+        monthlyIncome = tk.Text(root, height=1, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+        monthlyIncome.place(x=290, y=225)
 
+        rrspContributionLabel = tk.Label(root, text="RRSP Contribution \n\t\t $", font=('Times New Roman', 18), bg='white')
+        rrspContributionLabel.place(x=75, y=275)
+        rrspContribution = tk.Text(root, height=1, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+        rrspContribution.place(x=290, y=300)
 
+        fhsaContributionLabel = tk.Label(root, text="FHSA Contribution \n\t\t $", font=('Times New Roman', 18), bg='white')
+        fhsaContributionLabel.place(x=75, y=350)
+        fhsaContribution = tk.Text(root, height=1, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+        fhsaContribution.place(x=290, y=375)
 
+        capitolGainsLabel = tk.Label(root, text="Capitol Gains \n\t\t $", font=('Times New Roman', 18), bg='white')
+        capitolGainsLabel.place(x=75, y=425)
+        capitolGains = tk.Text(root, height=1, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+        capitolGains.place(x=290, y=450)
 
 
 
