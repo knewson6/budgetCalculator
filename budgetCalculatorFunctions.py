@@ -114,7 +114,7 @@ def federalTax(monthlyIncome, taxDeductibleSavings):
 
     return fedTaxedIncome
 
-def provincialTax(fedTaxedIncome):
+def ontarioTax(fedTaxedIncome):
 
     taxedIncome = 0
 
