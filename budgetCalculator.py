@@ -1,5 +1,10 @@
-from budgetCalculatorFunctions import getChar, getFloat, getExpenses, getIncome, getSavings, getTaxDeductibleSavings, federalTax, provincialTax
-from graphicUserInterface import graphicUI
+import tkinter as tk
+from tkinter import *
+from tkinter import ttk
+#from budgetCalcFunctions import
+from guiFunctions import mainScreen
 
-graphicUI()
+root = tk.Tk()
 
+mainScreen(root)
+root.mainloop()
