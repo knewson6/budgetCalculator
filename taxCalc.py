@@ -51,11 +51,49 @@ def taxCalculator(root, mainScreen):
         # check user only inputted numbers
         # create a popup error message to let them know to only enter numbers
 
-        return userProvince, userMonthlyIncome , userRRSPcontribution, userFHSAcontribution, userCapitolGains
+        return userProvince, userMonthlyIncome, userRRSPcontribution, userFHSAcontribution, userCapitolGains
 
 
-def provincialTax():
+def provincialTax(userProvince, userMonthlyIncome, userRRSPcontribution, userFHSAcontribution, userCapitolGains):
 
+    income = (userMonthlyIncome * 12) + userCapitolGains - userRRSPcontribution - userFHSAcontribution
+
+    if userProvince == "Ontario":
+
+        taxBracket1 = 52886
+        taxRate1 = 0.0505
+
+        taxBracket2 = 105775
+        taxRate2 = 0.0915
+
+        taxBracket3 = 150000
+        taxRate3 = 0.1116
+
+        taxBracket4 = 220000
+        taxRate4 = 0.1216
+
+        taxRate5 = 0.1316
+
+        calculateProvincialTax()
+
+    def calculateProvincialTax(taxBracket1, taxBracket2, taxBracket3, taxBracket4, taxRate1, taxRate2, taxRate3, taxRate4, taxRate5):
+
+    if income <= taxBracket1:
+        provincialTaxedIncome = income * taxRate1
+
+    elif taxBracket1 < income <= taxBracket2:
+        provincialTaxedIncome = (taxBracket1 * taxRate1) + ((income - taxBracket1) * taxRate2)
+
+    elif taxBracket2 < income <= taxBracket3:
+        provincialTaxedIncome = (taxBracket1 * taxRate1) + ((taxBracket2 - taxBracket1) * taxRate2) + ((income - taxBracket2) * taxRate3)
+
+    elif taxBracket3 < income <= taxBracket4:
+        provincialTaxedIncome = (taxBracket1 * taxRate1) + ((taxBracket2 - taxBracket1) * taxRate2) + ((taxBracket3 - taxBracket2) * taxRate3) + ((income - taxBracket3) * taxRate4)
+
+    elif income > taxBracket4:
+        provincialTaxedIncome = (taxBracket1 * taxRate1) + ((taxBracket2 - taxBracket1) * taxRate2) + ((taxBracket3 - taxBracket2) * taxRate3) + ((taxBracket4 - taxBracket3) * taxRate4) + ((income - taxBracket4) * taxRate5)
+
+    return provincialTaxedIncome
 
 
 # def federalTax(provincialTax):
