@@ -42,69 +42,52 @@ def taxCalculator(root, mainScreen):
     backButton.place(x=1050, y=600, height=50, width=100)
 
     def getUserInput():
+
         userProvince = provinces.get()
-        userMonthlyIncome = monthlyIncome.get().strip()
-        userRRSPcontribution = rrspContribution.get().strip()
-        userFHSAcontribution = fhsaContribution.get().strip()
-        userCapitolGains = capitolGains.get().strip()
 
-        # check user only inputted numbers
-        # create a popup error message to let them know to only enter numbers
+        if monthlyIncome.get().replace(",","").replace(".","",1).isdigit():
+            userMonthlyIncome = float(monthlyIncome.get().strip() or 0)
+        #else create an error popup
 
-        return userProvince, userMonthlyIncome, userRRSPcontribution, userFHSAcontribution, userCapitolGains
+        if rrspContribution.get().replace(",", "").replace(".", "", 1).isdigit():
+            userRRSPcontribution = float(rrspContribution.get().strip() or 0)
+        #else create an error popup
+
+        if fhsaContribution.get().replace(",", "").replace(".", "", 1).isdigit():
+            userFHSAcontribution = float(fhsaContribution.get().strip() or 0)
+        #else create an error popup
+
+        if capitolGains.get().replace(",", "").replace(".", "", 1).isdigit():
+            userCapitolGains = float(capitolGains.get().strip() or 0)
+        #else create an error popup
 
 
-def provincialTax(userProvince, userMonthlyIncome, userRRSPcontribution, userFHSAcontribution, userCapitolGains):
+        income = (userMonthlyIncome * 12) + userCapitolGains - userRRSPcontribution - userFHSAcontribution
 
-    income = (userMonthlyIncome * 12) + userCapitolGains - userRRSPcontribution - userFHSAcontribution
+        if userProvince == "Ontario":
+            ontarioTax = calculateTax(income, 52886, 105775, 150000, 220000, 0.0505, 0.0915, 0.1116, 0.1216, 0.1316)
+            federalTax = calculateTax(income, 57375, 114750, 177882, 253414, 0.15, 0.205, 0.26, 0.29, 0.33)
 
-    if userProvince == "Ontario":
 
-        taxBracket1 = 52886
-        taxRate1 = 0.0505
 
-        taxBracket2 = 105775
-        taxRate2 = 0.0915
+def calculateTax(income, taxBracket1, taxBracket2, taxBracket3, taxBracket4, taxRate1, taxRate2, taxRate3, taxRate4, taxRate5):
 
-        taxBracket3 = 150000
-        taxRate3 = 0.1116
-
-        taxBracket4 = 220000
-        taxRate4 = 0.1216
-
-        taxRate5 = 0.1316
-
-        calculateProvincialTax()
-
-    def calculateProvincialTax(taxBracket1, taxBracket2, taxBracket3, taxBracket4, taxRate1, taxRate2, taxRate3, taxRate4, taxRate5):
+    #if you make more than 67,800, your max CPP limit is 3500, below that it is 4.91% of your income (its 5.95% for employer and employee to pay, but ive made it 4.91 for the user)
+    #if you make more than 65,700, your max EI limit is 1077.48, below that is 1.67% of your income
 
     if income <= taxBracket1:
-        provincialTaxedIncome = income * taxRate1
+        taxedIncome = income * taxRate1
 
     elif taxBracket1 < income <= taxBracket2:
-        provincialTaxedIncome = (taxBracket1 * taxRate1) + ((income - taxBracket1) * taxRate2)
+        taxedIncome = (taxBracket1 * taxRate1) + ((income - taxBracket1) * taxRate2)
 
     elif taxBracket2 < income <= taxBracket3:
-        provincialTaxedIncome = (taxBracket1 * taxRate1) + ((taxBracket2 - taxBracket1) * taxRate2) + ((income - taxBracket2) * taxRate3)
+        taxedIncome = (taxBracket1 * taxRate1) + ((taxBracket2 - taxBracket1) * taxRate2) + ((income - taxBracket2) * taxRate3)
 
     elif taxBracket3 < income <= taxBracket4:
-        provincialTaxedIncome = (taxBracket1 * taxRate1) + ((taxBracket2 - taxBracket1) * taxRate2) + ((taxBracket3 - taxBracket2) * taxRate3) + ((income - taxBracket3) * taxRate4)
+        taxedIncome = (taxBracket1 * taxRate1) + ((taxBracket2 - taxBracket1) * taxRate2) + ((taxBracket3 - taxBracket2) * taxRate3) + ((income - taxBracket3) * taxRate4)
 
     elif income > taxBracket4:
-        provincialTaxedIncome = (taxBracket1 * taxRate1) + ((taxBracket2 - taxBracket1) * taxRate2) + ((taxBracket3 - taxBracket2) * taxRate3) + ((taxBracket4 - taxBracket3) * taxRate4) + ((income - taxBracket4) * taxRate5)
+        taxedIncome = (taxBracket1 * taxRate1) + ((taxBracket2 - taxBracket1) * taxRate2) + ((taxBracket3 - taxBracket2) * taxRate3) + ((taxBracket4 - taxBracket3) * taxRate4) + ((income - taxBracket4) * taxRate5)
 
-    return provincialTaxedIncome
-
-
-# def federalTax(provincialTax):
-#
-#    if provincialTax <= 55867:
-#        taxedIncome = provincialTax * 0.85
-#    elif 55867 < provincialTax <= 111733:
-#        taxedIncome = (55867 * 0.85) + ((provincialTax - 55867) * 0.795)
-#    elif 111733 < provincialTax <= 173205:
-#        taxedIncome = (55867 * 0.85) + ((provincialTax - 55867) * 0.795) + ((provincialTax - 111733) * 0.74)
-#    elif 173205 < provincialTax <= 256752:
-#        taxedIncome = (55867 * 0.85) + ((provincialTax - 55867) * 0.795) + ((provincialTax - 111733) * 0.74) + ((provincialTax - 256752) * 0.71)
-#    elif provincialTax > 256752:
-#        taxedIncome = (55867 * 0.85) + ((provincialTax - 55867) * 0.795) + ((provincialTax - 111733) * 0.74) + ((provincialTax - 256752) * 0.71) + ((provincialTax - 256752) * 0.67)
+        return taxedIncome
