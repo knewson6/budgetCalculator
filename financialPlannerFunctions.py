@@ -40,18 +40,3 @@ def ontarioTax():
         provincialTaxedIncome = (taxedIncome * 0.9495) + ((taxedIncome - 51446) * 0.9085) + ((taxedIncome - 102894) * 0.8884) + ((taxedIncome - 150000) * 0.8784) + ((taxedIncome - 220000) * 0.8684)
 
     return provincialTaxedIncome
-
-def federalTax(provincialTaxedIncome):
-
-    if provincialTaxedIncome <= 55867:
-        taxedIncome = provincialTaxedIncome * 0.85
-    elif 55867 < provincialTaxedIncome <= 111733:
-        taxedIncome = (55867 * 0.85) + ((provincialTaxedIncome - 55867) * 0.795)
-    elif 111733 < provincialTaxedIncome <= 173205:
-        taxedIncome = (55867 * 0.85) + ((provincialTaxedIncome - 55867) * 0.795) + ((provincialTaxedIncome - 111733) * 0.74)
-    elif 173205 < provincialTaxedIncome <= 256752:
-        taxedIncome = (55867 * 0.85) + ((provincialTaxedIncome - 55867) * 0.795) + ((provincialTaxedIncome - 111733) * 0.74) + ((provincialTaxedIncome - 256752) * 0.71)
-    elif provincialTaxedIncome > 256752:
-        taxedIncome = (55867 * 0.85) + ((provincialTaxedIncome - 55867) * 0.795) + ((provincialTaxedIncome - 111733) * 0.74) + ((provincialTaxedIncome - 256752) * 0.71) + ((provincialTaxedIncome - 256752) * 0.67)
-
-    return taxedIncome

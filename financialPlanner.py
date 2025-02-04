@@ -1,23 +1,22 @@
 # Kyle Newson
-# Jan 29, 2025
+# Feb 3, 2025
 
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
 from budgetPlanner import budgetPlanner
+from taxCalc import taxCalculator
 from sharedFunctions import frames
 
-def mainScreen():
-    root = tk.Tk()
+def mainScreen(root):
 
-    root.geometry("1200x680")
     root.title("Personal Financial Assistant")
     root.configure(bg='light gray')
 
     frames(root)
 
 #budget planner for the user, and ability to create or edit/manage files
-    budgetPlannerButton = tk.Button(root, text="Budget Planner", font=('Times New Roman', 18), bg='gray85', command=lambda: budgetPlanner(root))
+    budgetPlannerButton = tk.Button(root, text="Budget Planner", font=('Times New Roman', 18), bg='gray85', command=lambda: budgetPlanner(root, mainScreen))
     budgetPlannerButton.place(x=50, y=150, height=200, width=350)
 
 #tracks the progress on the users goals
@@ -25,7 +24,7 @@ def mainScreen():
     savingsTrackerButton.place(x=425, y=150, height=200, width=350)
 
 #calculates the amount they earn after tax in their specific area
-    taxCalcButton = tk.Button(root, text="Income Tax Calculator", font=('Times New Roman', 18), bg='gray85', command=lambda: taxCalculator(root))
+    taxCalcButton = tk.Button(root, text="Income Tax Calculator", font=('Times New Roman', 18), bg='gray85', command=lambda: taxCalculator(root, mainScreen))
     taxCalcButton.place(x=800, y=150, height=200, width=350)
 
 #goes into loan or mortgage and breaks down the interest and premium paid over the timeframe
@@ -40,5 +39,10 @@ def mainScreen():
     stockGuideButton = tk.Button(root, text="Stock Guide", font=("Times New Roman", 18), bg='gray85')
     stockGuideButton.place(x=800, y=375, height=200, width=350)
 
+def startUp():
+    root = tk.Tk()
+    root.geometry("1200x680")
+    mainScreen(root)
     root.mainloop()
-mainScreen()
+
+startUp()
