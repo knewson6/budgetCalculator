@@ -4,7 +4,8 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-from guiFunctions import frames, budgetPlanner, taxCalculator
+from budgetPlanner import budgetPlanner
+from sharedFunctions import frames
 
 def mainScreen():
     root = tk.Tk()
