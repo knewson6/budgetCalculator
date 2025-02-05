@@ -8,8 +8,8 @@ from sharedFunctions import frames
 def taxCalculator(root, mainScreen):
     frames(root)
 
-    noticeLabel = tk.Label(root, text="Please Input All Numbers On A Monthly Basis", font=('Times New Roman', 18), bg='white')
-    noticeLabel.place(x=350, y=120, height=25, width=500)
+    noticeLabel = tk.Label(root, text="Please Input All Numbers On A Monthly Basis", font=('Times New Roman', 22), bg='white')
+    noticeLabel.place(x=300, y=120, height=30, width=600)
 
     provinces = StringVar(root)
     provinces.set("Pick a Province or Territory")
@@ -39,7 +39,15 @@ def taxCalculator(root, mainScreen):
     calculateButton = tk.Button(root, text="Calculate!", font=('Times New Roman', 20), command=lambda: getUserInput())
     calculateButton.place(x=75, y=575, height=50, width=355)
 
-    #place the summary
+    netIncomeLabel = tk.Label(root, text="Net Income : $ 0.00", font=('Times New Roman', 18), bg='white')
+    netIncomeLabel.place(x=800, y=350)
+
+    provincialTaxesLabel = tk.Label(root, text="Provincial Taxes: $ 0.00 ", font=('Times New Roman', 18), bg='white')
+    provicinalTaxesLabel.place(x=500, y=450)
+
+    federalTaxesLabel = tk.Label(root, text="Provincial Taxes: $ 0.00 ", font=('Times New Roman', 18), bg='white')
+    federalTaxesLabel.place(x=500, y=550)
+
     #take home income
     #fed taxes paid
     #prov taxes paid
@@ -66,8 +74,19 @@ def taxCalculator(root, mainScreen):
         income = (userMonthlyIncome * 12) + userCapitalGains - userRRSPcontribution - userFHSAcontribution
 
         if userProvince == "Ontario":
-            ontarioTax = calculateTax(income, 52886, 105775, 150000, 220000, 0.0505, 0.0915, 0.1116, 0.1216, 0.1316)
+
+            provincialTax = calculateTax(income, 52886, 105775, 150000, 220000, 0.0505, 0.0915, 0.1116, 0.1216, 0.1316)
             federalTax = calculateTax(income, 57375, 114750, 177882, 253414, 0.15, 0.205, 0.26, 0.29, 0.33)
+
+        else:
+            exit()
+
+
+        netIncomeLabel.config(text=f"Net Income: $ {income:.2f}")
+        provicialTaxesLabel.config(text=f"Provincial Taxes : $ {provincialTax:.2f}")
+        federalTaxesLabel.config(text=f"Federal Taxes : $ {federalTax:.2f}")
+
+        return
 
 
 def calculateTax(income, taxBracket1, taxBracket2, taxBracket3, taxBracket4, taxRate1, taxRate2, taxRate3, taxRate4, taxRate5):
