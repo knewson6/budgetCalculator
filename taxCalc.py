@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import *
+from tkinter import messagebox
 from tkinter import ttk
 from sharedFunctions import frames
 
@@ -30,13 +31,18 @@ def taxCalculator(root, mainScreen):
     fhsaContribution = tk.Entry(root, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
     fhsaContribution.place(x=300, y=425)
 
-    capitolGainsLabel = tk.Label(root, text="Realised Capitol Gains \n\t\t $", font=('Times New Roman', 18), bg='white')
-    capitolGainsLabel.place(x=75, y=475)
-    capitolGains = tk.Entry(root, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
-    capitolGains.place(x=300, y=500)
+    capitalGainsLabel = tk.Label(root, text="Realised capital Gains \n\t\t $", font=('Times New Roman', 18), bg='white')
+    capitalGainsLabel.place(x=75, y=475)
+    capitalGains = tk.Entry(root, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+    capitalGains.place(x=300, y=500)
 
-    calculateButton = tk.Button(root, text="Calculate!", font=('Times New Roman', 12), command=lambda: getUserInput())
-    calculateButton.place(x=800, y=600, height=50, width=100)
+    calculateButton = tk.Button(root, text="Calculate!", font=('Times New Roman', 20), command=lambda: getUserInput())
+    calculateButton.place(x=75, y=575, height=50, width=355)
+
+    #place the summary
+    #take home income
+    #fed taxes paid
+    #prov taxes paid
 
     backButton = tk.Button(root, text="Back", font=('Times New Roman', 12), command=lambda: mainScreen(root))
     backButton.place(x=1050, y=600, height=50, width=100)
@@ -44,30 +50,24 @@ def taxCalculator(root, mainScreen):
     def getUserInput():
 
         userProvince = provinces.get()
+        if userProvince == "Pick a Province or Territory":
+            messagebox.showerror("Input Error", "Please select a province.")
+            return
 
-        if monthlyIncome.get().replace(",","").replace(".","",1).isdigit():
-            userMonthlyIncome = float(monthlyIncome.get().strip() or 0)
-        #else create an error popup
+        try:
+            userMonthlyIncome = float(monthlyIncome.get().replace(",", "").replace(".", "", 1).strip() or 0)
+            userRRSPcontribution = float(rrspContribution.get().replace(",", "").replace(".", "", 1).strip() or 0)
+            userFHSAcontribution = float(fhsaContribution.get().replace(",", "").replace(".", "", 1).strip() or 0)
+            userCapitalGains = float(capitalGains.get().replace(",", "").replace(".", "", 1).strip() or 0)
+        except ValueError:
+            messagebox.showerror('Input Error', 'Error: Please Enter a Valid Number')
+            return
 
-        if rrspContribution.get().replace(",", "").replace(".", "", 1).isdigit():
-            userRRSPcontribution = float(rrspContribution.get().strip() or 0)
-        #else create an error popup
-
-        if fhsaContribution.get().replace(",", "").replace(".", "", 1).isdigit():
-            userFHSAcontribution = float(fhsaContribution.get().strip() or 0)
-        #else create an error popup
-
-        if capitolGains.get().replace(",", "").replace(".", "", 1).isdigit():
-            userCapitolGains = float(capitolGains.get().strip() or 0)
-        #else create an error popup
-
-
-        income = (userMonthlyIncome * 12) + userCapitolGains - userRRSPcontribution - userFHSAcontribution
+        income = (userMonthlyIncome * 12) + userCapitalGains - userRRSPcontribution - userFHSAcontribution
 
         if userProvince == "Ontario":
             ontarioTax = calculateTax(income, 52886, 105775, 150000, 220000, 0.0505, 0.0915, 0.1116, 0.1216, 0.1316)
             federalTax = calculateTax(income, 57375, 114750, 177882, 253414, 0.15, 0.205, 0.26, 0.29, 0.33)
-
 
 
 def calculateTax(income, taxBracket1, taxBracket2, taxBracket3, taxBracket4, taxRate1, taxRate2, taxRate3, taxRate4, taxRate5):
@@ -90,4 +90,4 @@ def calculateTax(income, taxBracket1, taxBracket2, taxBracket3, taxBracket4, tax
     elif income > taxBracket4:
         taxedIncome = (taxBracket1 * taxRate1) + ((taxBracket2 - taxBracket1) * taxRate2) + ((taxBracket3 - taxBracket2) * taxRate3) + ((taxBracket4 - taxBracket3) * taxRate4) + ((income - taxBracket4) * taxRate5)
 
-        return taxedIncome
+    return taxedIncome
