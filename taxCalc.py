@@ -16,28 +16,33 @@ def taxCalculator(root, mainScreen):
     provinceMenu = OptionMenu(root, provinces ,"Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon")
     provinceMenu.place(x=125, y=175, height=50, width=225)
 
-    monthlyIncomeLabel = tk.Label(root, text="Monthly Income \n\t\t $", font=('Times New Roman', 18), bg='white')
+    monthlyIncomeLabel = tk.Label(root, text="Monthly Income \n" + "$".rjust(32), font=('Times New Roman', 18), bg='white', width=30, anchor="w")
     monthlyIncomeLabel.place(x=75, y=250)
     monthlyIncome = tk.Entry(root, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
     monthlyIncome.place(x=300, y=275)
 
-    rrspContributionLabel = tk.Label(root, text="RRSP Contribution \n\t\t $", font=('Times New Roman', 18), bg='white')
-    rrspContributionLabel.place(x=75, y=325)
+    monthlySelfIncomeLabel = tk.Label(root, anchor="w", width=30, text="Monthly Self Employment Income \n" + "$".rjust(32), font=('Times New Roman', 18), bg='white')
+    monthlySelfIncomeLabel.place(x=75, y=325)
+    monthlySelfIncome = tk.Entry(root, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+    monthlySelfIncome.place(x=300, y=350)
+
+    rrspContributionLabel = tk.Label(root, text="RRSP Contribution \n" + "$".rjust(32), font=('Times New Roman', 18), bg='white')
+    rrspContributionLabel.place(x=75, y=400)
     rrspContribution = tk.Entry(root, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
-    rrspContribution.place(x=300, y=350)
+    rrspContribution.place(x=300, y=425)
 
-    fhsaContributionLabel = tk.Label(root, text="FHSA Contribution \n\t\t $", font=('Times New Roman', 18), bg='white')
-    fhsaContributionLabel.place(x=75, y=400)
+    fhsaContributionLabel = tk.Label(root, text="FHSA Contribution \n" + "$".rjust(32), font=('Times New Roman', 18), bg='white')
+    fhsaContributionLabel.place(x=75, y=475)
     fhsaContribution = tk.Entry(root, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
-    fhsaContribution.place(x=300, y=425)
+    fhsaContribution.place(x=300, y=500)
 
-    capitalGainsLabel = tk.Label(root, text="Realised capital Gains \n\t\t $", font=('Times New Roman', 18), bg='white')
-    capitalGainsLabel.place(x=75, y=475)
+    capitalGainsLabel = tk.Label(root, text="Realised Capital Gains \n" + "$".rjust(32), font=('Times New Roman', 18), bg='white')
+    capitalGainsLabel.place(x=75, y=550)
     capitalGains = tk.Entry(root, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
-    capitalGains.place(x=300, y=500)
+    capitalGains.place(x=300, y=575)
 
     calculateButton = tk.Button(root, text="Calculate!", font=('Times New Roman', 20), command=lambda: getUserInput())
-    calculateButton.place(x=75, y=575, height=50, width=355)
+    calculateButton.place(x=600, y=250, height=50, width=355)
 
     takeHomeLabel = tk.Label(root, text="Take Home Pay: $ 0.00 ", font=('Times New Roman', 22), bg='white')
     takeHomeLabel.place(x=700, y=225)
@@ -223,6 +228,9 @@ def calculateTax(income, taxBracket, taxRate):
 
     #if you make more than 67,800, your max CPP limit is 3500, below that it is 4.91% of your income (its 5.95% for employer and employee to pay, but ive made it 4.91 for the user)
     #if you make more than 65,700, your max EI limit is 1077.48, below that is 1.67% of your income
+
+    #average tax rate
+    #marginal tax rate
 
     tax = 0
     previousBracket = 0
