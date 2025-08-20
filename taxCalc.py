@@ -13,7 +13,8 @@ def taxCalculator(root, mainScreen):
 
     provinces = StringVar(root)
     provinces.set("Pick a Province or Territory")
-    provinceMenu = OptionMenu(root, provinces ,"Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon")
+    provinceMenu = OptionMenu(root, provinces ,"Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories",
+                              "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon")
     provinceMenu.place(x=125, y=175, height=50, width=225)
 
     monthlyIncomeLabel = tk.Label(root, text="Employment Income \n" + "$".rjust(36), font=('Times New Roman', 18), bg='white', width=50, anchor="w", justify="left")

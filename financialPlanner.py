@@ -6,6 +6,7 @@ from tkinter import *
 from tkinter import ttk
 from budgetPlanner import budgetPlanner
 from taxCalc import taxCalculator
+from loanCalc import loanCalculator
 from sharedFunctions import frames
 
 def mainScreen(root):
@@ -23,16 +24,16 @@ def mainScreen(root):
     savingsTrackerButton = tk.Button(root, text="Savings Tracker", font=('Times New Roman', 18), bg='gray85')
     savingsTrackerButton.place(x=425, y=150, height=200, width=350)
 
-#calculates the amount they earn after tax in their specific area
+#estimates income tax and take home pay
     taxCalcButton = tk.Button(root, text="Income Tax Calculator", font=('Times New Roman', 18), bg='gray85', command=lambda: taxCalculator(root, mainScreen))
     taxCalcButton.place(x=800, y=150, height=200, width=350)
 
 #goes into loan or mortgage and breaks down the interest and premium paid over the timeframe
-    loanCalc = tk.Button(root, text="Loan/Mortgage Calculator", font=('Times New Roman', 18), bg='gray85')
+    loanCalc = tk.Button(root, text="Loan/Mortgage Calculator", font=('Times New Roman', 18), bg='gray85', command=lambda : loanCalculator(root, mainScreen))
     loanCalc.place(x=50, y=375, height=200, width=350)
 
 #creates a plan to pay off a debt (or a certain amount) by a specific date
-    debtPayoffButton = tk.Button(root, text="Debt Payoff Plan", font=("Times New Roman", 18), bg='gray85')
+    debtPayoffButton = tk.Button(root, text="Debt Payoff Calculator", font=("Times New Roman", 18), bg='gray85')
     debtPayoffButton.place(x=425, y=375, height=200, width=350)
 
 #gives insight on which stokes to buy and when
