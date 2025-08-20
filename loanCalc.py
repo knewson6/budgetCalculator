@@ -19,10 +19,10 @@ def loanCalculator(root, mainScreen):
     def mortgage():
         frames(root)
 
-        loanAmountLabel = tk.Label(root, text="Mortgage Amount:" + "$".rjust(4), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
-        loanAmountLabel.place(x=125, y=125)
-        loanAmount = tk.Entry(root, width=15, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
-        loanAmount.place(x=375, y=128)
+        mortgageAmountLabel = tk.Label(root, text="Mortgage Amount:" + "$".rjust(4), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
+        mortgageAmountLabel.place(x=125, y=125)
+        mortgageAmount = tk.Entry(root, width=15, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+        mortgageAmount.place(x=375, y=128)
 
         interestRateLabel = tk.Label(root, text="Interest Rate:" + "%".rjust(4), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
         interestRateLabel.place(x=700, y=125)
@@ -90,37 +90,58 @@ def loanCalculator(root, mainScreen):
         paymentFrequencyMenu3 = OptionMenu(root, paymentFrequency3, "Weekly", "Monthly", "Annually")
         paymentFrequencyMenu3.place(x=820, y=325, height=50, width=225)
 
-        totalAmount1 = tk.Label(root, text="Total Amount: $ 0.00 ", font=('Times New Roman', 18), bg='white')
-        totalAmount1.place(x=75, y=400)
+        totalAmountLabel1 = tk.Label(root, text="Total Amount: $ 0.00 ", font=('Times New Roman', 18), bg='white')
+        totalAmountLabel1.place(x=75, y=400)
 
-        totalAmount2 = tk.Label(root, text="Total Amount: $ 0.00 ", font=('Times New Roman', 18), bg='white')
-        totalAmount2.place(x=435, y=400)
+        totalAmountLabel2 = tk.Label(root, text="Total Amount: $ 0.00 ", font=('Times New Roman', 18), bg='white')
+        totalAmountLabel2.place(x=435, y=400)
 
-        totalAmount3 = tk.Label(root, text="Total Amount: $ 0.00 ", font=('Times New Roman', 18), bg='white')
-        totalAmount3.place(x=795, y=400)
+        totalAmountLabel3 = tk.Label(root, text="Total Amount: $ 0.00 ", font=('Times New Roman', 18), bg='white')
+        totalAmountLabel3.place(x=795, y=400)
 
-        insurance1 = tk.Label(root, text="Insurance: $ 0.00 ", font=('Times New Roman', 18), bg='white')
-        insurance1.place(x=78, y=430)
+        insuranceLabel1 = tk.Label(root, text="Insurance: $ 0.00 ", font=('Times New Roman', 18), bg='white')
+        insuranceLabel1.place(x=78, y=430)
 
-        insurance2 = tk.Label(root, text="Insurance: $ 0.00 ", font=('Times New Roman', 18), bg='white')
-        insurance2.place(x=438, y=430)
+        insuranceLabel2 = tk.Label(root, text="Insurance: $ 0.00 ", font=('Times New Roman', 18), bg='white')
+        insuranceLabel2.place(x=438, y=430)
 
-        insurance3 = tk.Label(root, text="Insurance: $ 0.00 ", font=('Times New Roman', 18), bg='white')
-        insurance3.place(x=798, y=430)
+        insuranceLabel3 = tk.Label(root, text="Insurance: $ 0.00 ", font=('Times New Roman', 18), bg='white')
+        insuranceLabel3.place(x=798, y=430)
 
-        payment1 = tk.Label(root, text="Payment: $ 0.00 ", font=('Times New Roman', 20), bg='white')
-        payment1.place(x=438, y=475)
+        paymentLabel1 = tk.Label(root, text="Payment: $ 0.00 ", font=('Times New Roman', 20), bg='white')
+        paymentLabel1.place(x=438, y=475)
 
-        payment2 = tk.Label(root, text="Payment: $ 0.00 ", font=('Times New Roman', 20), bg='white')
-        payment2.place(x=78, y=475)
+        paymentLabel2 = tk.Label(root, text="Payment: $ 0.00 ", font=('Times New Roman', 20), bg='white')
+        paymentLabel2.place(x=78, y=475)
 
-        payment3 = tk.Label(root, text="Payment: $ 0.00 ", font=('Times New Roman', 20), bg='white')
-        payment3.place(x=798, y=475)
+        paymentLabel3 = tk.Label(root, text="Payment: $ 0.00 ", font=('Times New Roman', 20), bg='white')
+        paymentLabel3.place(x=798, y=475)
+
+        calculateButton = tk.Button(root, text="Calculate", font=('Times New Roman', 20), command=lambda: getUserInput())
+        calculateButton.place(x=375, y=550, height=50, width=370)
 
         returnButton = tk.Button(root, text="Back", font=('Times New Roman', 12), command=lambda: loanCalculator(root, mainScreen))
         returnButton.place(x=1050, y=600, height=50, width=100)
 
         def getUserInput():
+
+            try:
+                userMortgageAmount = float(mortgageAmount.get().replace(",", "").replace(".", "", 1).strip() or 0)
+                userInterestRate = float(interestRate.get().replace(",", "").replace(".", "", 1).strip() or 0)
+                userDownPaymentValue1 = float(downPaymentValue1.get().replace(",", "").replace(".", "", 1).strip() or 0)
+                userDownPaymentValue2 = float(downPaymentValue2.get().replace(",", "").replace(".", "", 1).strip() or 0)
+                userDownPaymentValue3 = float(downPaymentValue3.get().replace(",", "").replace(".", "", 1).strip() or 0)
+            except ValueError:
+                messagebox.showerror('Input Error', 'Error: Please Enter a Valid Number')
+                return
+
+            try:
+                userDownPaymentPercent1 = float(downPaymentPercent1.get().replace(",", "").replace(".", "", 1).strip() or 0)
+                userDownPaymentPercent2 = float(downPaymentPercent2.get().replace(",", "").replace(".", "", 1).strip() or 0)
+                userDownPaymentPercent3 = float(downPaymentPercent3.get().replace(",", "").replace(".", "", 1).strip() or 0)
+            except ValueError:
+                messagebox.showerror('Input Error', 'Error: Please Enter a Valid Percentage')
+                return
 
             userAmortizationPeriod1 = amortizationPeriod1.get()
             if userAmortizationPeriod1 == "Amortization Period":
@@ -152,15 +173,10 @@ def loanCalculator(root, mainScreen):
                 messagebox.showerror("Input Error", "Please select a payment frequency")
                 return
 
-            try:
-                userAmount = float(loanAmount.get().replace(",", "").replace(".", "", 1).strip() or 0)
-                userInterestRate = float(interestRate.get().replace(",", "").replace(".", "", 1).strip() or 0)
-                userDownPayment1 = float(downPaymentValue1.get().replace(",", "").replace(".", "", 1).strip() or 0)
-                userDownPayment2 = float(downPaymentValue2.get().replace(",", "").replace(".", "", 1).strip() or 0)
-                userDownPayment3 = float(downPaymentValue3.get().replace(",", "").replace(".", "", 1).strip() or 0)
-            except ValueError:
-                messagebox.showerror('Input Error', 'Error: Please Enter a Valid Number')
-                return
+            #calculate insurance
+            #use down payment value or percent
+
+            totalAmountLabel1.config(text=f"Total Amount: $ {totalAmount1:.2f}")
 
     def loan():
         frames(root)
