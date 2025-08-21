@@ -37,7 +37,7 @@ def taxCalculator(root, mainScreen):
     capitalGains = tk.Entry(root, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
     capitalGains.place(x=315, y=505)
 
-    calculateButton = tk.Button(root, text="Calculate!", font=('Times New Roman', 20), command=lambda: getUserInput())
+    calculateButton = tk.Button(root, text="Calculate!", font=('Times New Roman', 20), command=lambda: calculate())
     calculateButton.place(x=75, y=575, height=50, width=370)
 
     takeHomeLabel = tk.Label(root, text="Take Home Pay: $ 0.00 ", font=('Times New Roman', 22), bg='white')
@@ -67,7 +67,7 @@ def taxCalculator(root, mainScreen):
     backButton = tk.Button(root, text="Back", font=('Times New Roman', 12), command=lambda: mainScreen(root))
     backButton.place(x=1050, y=600, height=50, width=100)
 
-    def getUserInput():
+    def calculate():
 
         userProvince = provinces.get()
         if userProvince == "Pick a Province or Territory":
