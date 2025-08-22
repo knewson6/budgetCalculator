@@ -75,10 +75,10 @@ def taxCalculator(root, mainScreen):
             return
 
         try:
-            userMonthlyIncome = float(monthlyIncome.get().replace(",", "").replace(".", "", 1).strip() or 0)
-            userRRSPcontribution = float(rrspContribution.get().replace(",", "").replace(".", "", 1).strip() or 0)
-            userFHSAcontribution = float(fhsaContribution.get().replace(",", "").replace(".", "", 1).strip() or 0)
-            userCapitalGains = float(capitalGains.get().replace(",", "").replace(".", "", 1).strip() or 0)
+            userMonthlyIncome = float(monthlyIncome.get().replace(",", "").strip() or 0)
+            userRRSPcontribution = float(rrspContribution.get().replace(",", "").strip() or 0)
+            userFHSAcontribution = float(fhsaContribution.get().replace(",", "").strip() or 0)
+            userCapitalGains = float(capitalGains.get().replace(",", "").strip() or 0)
         except ValueError:
             messagebox.showerror('Input Error', 'Error: Please Enter a Valid Number')
             return
@@ -231,8 +231,9 @@ def taxCalculator(root, mainScreen):
             eiContribution = 1077.48
 
         takeHome = income - federalTax - provincialTax - cppContribution - eiContribution
+        grossIncome = userMonthlyIncome * 12
 
-        grossIncomeLabel.config(text=f"Gross Income: $ {income:.2f}")
+        grossIncomeLabel.config(text=f"Gross Income : $ {grossIncome:.2f}")
         provincialTaxesLabel.config(text=f"Provincial Taxes : $ {provincialTax:.2f}")
         federalTaxesLabel.config(text=f"Federal Taxes : $ {federalTax:.2f}")
         cppContributionLabel.config(text=f"CPP Contribution : $ {cppContribution:.2f}")

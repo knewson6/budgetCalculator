@@ -19,18 +19,14 @@ def loanCalculator(root, mainScreen):
     def mortgage():
         frames(root)
 
-        mortgageAmountLabel = tk.Label(root, text="Mortgage Amount:" + "$".rjust(4), font=('Times New Roman', 20),
-                                       bg='white', width=50, anchor="w", justify="left")
-        mortgageAmountLabel.place(x=125, y=125)
-        mortgageAmount = tk.Entry(root, width=15, font=('Times New Roman', 18), highlightbackground='black',
-                                  highlightcolor='black', highlightthickness='2')
-        mortgageAmount.place(x=375, y=128)
+        houseAmountLabel = tk.Label(root, text="House Amount:" + "$".rjust(8), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
+        houseAmountLabel.place(x=125, y=125)
+        houseAmount = tk.Entry(root, width=15, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+        houseAmount.place(x=375, y=128)
 
-        interestRateLabel = tk.Label(root, text="Interest Rate:" + "%".rjust(4), font=('Times New Roman', 20),
-                                     bg='white', width=50, anchor="w", justify="left")
+        interestRateLabel = tk.Label(root, text="Interest Rate:" + "%".rjust(4), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
         interestRateLabel.place(x=700, y=125)
-        interestRate = tk.Entry(root, width=10, font=('Times New Roman', 18), highlightbackground='black',
-                                highlightcolor='black', highlightthickness='2')
+        interestRate = tk.Entry(root, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
         interestRate.place(x=900, y=128)
 
         options = []
@@ -74,16 +70,16 @@ def loanCalculator(root, mainScreen):
         returnButton.place(x=1050, y=600, height=50, width=100)
 
         def calculate():
-
             try:
-                userMortgageAmount = float(mortgageAmount.get().replace(",", "").replace(".", "", 1).strip() or 0)
-                userInterestRate = float(interestRate.get().replace(",", "").replace(".", "", 1).strip() or 0)
+                userHouseAmount = float(houseAmount.get().replace(",", "").replace(".", "", 1).strip() or 0)
+                userInterestRate = float(interestRate.get().strip() or 0)
             except ValueError:
                 messagebox.showerror('Input Error', 'Error: Please Enter a Valid Number')
                 return
 
-            for i, opt in enumerate(options, start=1):
+            userInterestRate = userInterestRate / 100
 
+            for i, opt in enumerate(options, start=1):
                 userDownPaymentPercent = float(opt["downPaymentPercent"].get().replace(",", "").replace(".", "", 1).strip() or 0)
                 userDownPaymentValue = float(opt["downPaymentValue"].get().replace(",", "").replace(".", "", 1).strip() or 0)
 
@@ -91,6 +87,7 @@ def loanCalculator(root, mainScreen):
                     userDownPaymentPercent = userDownPaymentValue / userMortgageAmount
                 else:
                     userDownPaymentPercent = userDownPaymentPercent / 100
+                    userDownPaymentValue = userHouseAmount * userDownPaymentPercent
 
                 if userDownPaymentPercent == 0 and userDownPaymentValue == 0:
                     messagebox.showerror('Input Error', f'Error: Please Enter a down payment amount or percent for option {i}')
@@ -106,43 +103,35 @@ def loanCalculator(root, mainScreen):
                     messagebox.showerror('Input Error', f'Error: Please Enter a Payment Frequency for option {i}')
                     return
 
-            #calculate insurance
-            if userMortgageAmount < 1500000:
-                if 0.05 < userDownPaymentPercent < 0.1:
-                    cmhcInsurance = (userMortgageAmount * 0.04)
-                elif 0.1 < userDownPaymentPercent < 0.15:
-                    cmhcInsurance = (userMortgageAmount * 0.031)
-                elif 0.15 < userDownPaymentPercent < 0.2:
-                    cmhcInsurance = (userMortgageAmount * 0.028)
+                userMortgageAmount = userHouseAmount - userDownPaymentValue
+
+                if userHouseAmount < 1500000 and userDownPaymentPercent < 0.2:
+                    if 0.05 <= userDownPaymentPercent < 0.1:
+                        cmhcInsurance = (userMortgageAmount * 0.04)
+                    elif 0.1 <= userDownPaymentPercent < 0.15:
+                        cmhcInsurance = (userMortgageAmount * 0.031)
+                    elif 0.15 <= userDownPaymentPercent < 0.2:
+                        cmhcInsurance = (userMortgageAmount * 0.028)
+                    else:
+                        cmhcInsurance = 0
                 else:
                     cmhcInsurance = 0
-            else:
-                cmhcInsurance = 0
 
-            totalMortgageAmount = userMortgageAmount + cmhcInsurance - userDownPaymentValue
+                if userPaymentFrequency == "Weekly":
+                    interestRatePeriods = 52
+                if userPaymentFrequency == "Monthly":
+                    interestRatePeriods = 12
+                if userPaymentFrequency == "Yearly":
+                    interestRatePeriods = 1
 
+                r = userInterestRate / interestRatePeriods
+                n = interestRatePeriods * userAmortizationPeriod
+                totalMortgageAmount = userMortgageAmount + cmhcInsurance
+                userPayment = (totalMortgageAmount * r) / (1 - ((1 + r) ** -n))
 
-
-            if userPaymentFrequency == "Weekly":
-                r = userInterestRate / 100 / userAmortizationPeriod / 52
-                n = 52 * userAmortizationPeriod
-                userPayment = ((userMortgageAmount - userDownPaymentValue) * r) / (1 - ((1+r) ** -n))
-
-            elif userPaymentFrequency == "Monthly":
-                r = userInterestRate / 100 / userAmortizationPeriod / 12
-                n = 12 * userAmortizationPeriod
-                userPayment = ((userMortgageAmount - userDownPaymentValue) * r) / (1 - ((1+r) ** -n))
-
-            elif userPaymentFrequency == "Yearly":
-                r = userInterestRate / 100 / userAmortizationPeriod
-                n = userAmortizationPeriod
-                userPayment = ((userMortgageAmount - userDownPaymentValue) * r) / (1 - ((1+r) ** -n))
-
-            opt["totalAmountLabel"].config(text=f"Total Amount: $ {totalMortgageAmount:.2f}")
-            opt["insuranceLabel"].config(text=f"Insurance: $ {cmhcInsurance:.2f}")
-            opt["paymentLabel"].config(text=f"Payment: $ {userPayment:.2f}")
-
-    #only 3rd option is being calculated
+                opt["totalAmountLabel"].config(text=f"Total Amount: $ {userMortgageAmount + cmhcInsurance:.2f}")
+                opt["insuranceLabel"].config(text=f"Insurance: $ {cmhcInsurance:.2f}")
+                opt["paymentLabel"].config(text=f"Payment: $ {userPayment:.2f}")
 
 
     def loan():
