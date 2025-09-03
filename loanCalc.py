@@ -71,7 +71,7 @@ def loanCalculator(root, mainScreen):
 
         def calculate():
             try:
-                userHouseAmount = float(houseAmount.get().replace(",", "").replace(".", "", 1).strip() or 0)
+                userHouseAmount = float(houseAmount.get().replace(",", "").strip() or 0)
                 userInterestRate = float(interestRate.get().strip() or 0)
             except ValueError:
                 messagebox.showerror('Input Error', 'Error: Please Enter a Valid Number')
@@ -80,14 +80,20 @@ def loanCalculator(root, mainScreen):
             userInterestRate = userInterestRate / 100
 
             for i, opt in enumerate(options, start=1):
-                userDownPaymentPercent = float(opt["downPaymentPercent"].get().replace(",", "").replace(".", "", 1).strip() or 0)
-                userDownPaymentValue = float(opt["downPaymentValue"].get().replace(",", "").replace(".", "", 1).strip() or 0)
+                try:
+                    userDownPaymentPercent = float(opt["downPaymentPercent"].get().replace(",", "").strip() or 0)
+                    userDownPaymentValue = float(opt["downPaymentValue"].get().replace(",", "").strip() or 0)
+                except valueError:
+                    messagebox.showerror('Input Error', 'Error: Please Enter a Valid Number')
+                    continue
 
-                if userDownPaymentPercent == 0:
+                if userDownPaymentPercent == 0 and userDownPaymentValue >0:
+                    userMortgageAmount = userHouseAmount - userDownPaymentValue
                     userDownPaymentPercent = userDownPaymentValue / userMortgageAmount
                 else:
                     userDownPaymentPercent = userDownPaymentPercent / 100
                     userDownPaymentValue = userHouseAmount * userDownPaymentPercent
+                    userMortgageAmount = userHouseAmount - userDownPaymentValue
 
                 if userDownPaymentPercent == 0 and userDownPaymentValue == 0:
                     messagebox.showerror('Input Error', f'Error: Please Enter a down payment amount or percent for option {i}')
@@ -103,7 +109,12 @@ def loanCalculator(root, mainScreen):
                     messagebox.showerror('Input Error', f'Error: Please Enter a Payment Frequency for option {i}')
                     return
 
-                userMortgageAmount = userHouseAmount - userDownPaymentValue
+                if userPaymentFrequency == "Weekly":
+                    interestRatePeriods = 52
+                elif userPaymentFrequency == "Monthly":
+                    interestRatePeriods = 12
+                elif userPaymentFrequency == "Annually":
+                    interestRatePeriods = 1
 
                 if userHouseAmount < 1500000 and userDownPaymentPercent < 0.2:
                     if 0.05 <= userDownPaymentPercent < 0.1:
@@ -117,13 +128,6 @@ def loanCalculator(root, mainScreen):
                 else:
                     cmhcInsurance = 0
 
-                if userPaymentFrequency == "Weekly":
-                    interestRatePeriods = 52
-                if userPaymentFrequency == "Monthly":
-                    interestRatePeriods = 12
-                if userPaymentFrequency == "Yearly":
-                    interestRatePeriods = 1
-
                 r = userInterestRate / interestRatePeriods
                 n = interestRatePeriods * userAmortizationPeriod
                 totalMortgageAmount = userMortgageAmount + cmhcInsurance
@@ -136,6 +140,16 @@ def loanCalculator(root, mainScreen):
 
     def loan():
         frames(root)
+
+        loanAmountLabel = tk.Label(root, text="Loan Amount:" + "$".rjust(8), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
+        loanAmountLabel.place(x=125, y=125)
+        loanAmount = tk.Entry(root, width=15, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+        loanAmount.place(x=360, y=128)
+
+        interestRateLabel = tk.Label(root, text="Interest Rate:" + "%".rjust(4), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
+        interestRateLabel.place(x=700, y=125)
+        interestRate = tk.Entry(root, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+        interestRate.place(x=900, y=128)
 
         returnButton = tk.Button(root, text="Back", font=('Times New Roman', 12), command=lambda: loanCalculator(root, mainScreen))
         returnButton.place(x=1050, y=600, height=50, width=100)
