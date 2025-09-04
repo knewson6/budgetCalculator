@@ -2,70 +2,81 @@ import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
-from sharedFunctions import frames
+from sharedFunctions import frames, backButton
 
 
 def taxCalculator(root, mainScreen):
-    frames(root)
+    calculatorFrame = frames(root)
 
-    noticeLabel = tk.Label(root, text="Please Input All Numbers On A Monthly Basis", font=('Times New Roman', 22), bg='white')
-    noticeLabel.place(x=300, y=120, height=30, width=600)
-
-    provinces = StringVar(root)
+    provinces = StringVar(calculatorFrame)
     provinces.set("Pick a Province or Territory")
-    provinceMenu = OptionMenu(root, provinces ,"Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories",
+    provinceMenu = OptionMenu(calculatorFrame, provinces ,"Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories",
                               "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon")
-    provinceMenu.place(x=125, y=175, height=50, width=225)
+    provinceMenu.grid(row=0, column=0, rowspan=2, columnspan=2, padx=10, pady=5, sticky="nsew")
+    provinceMenu.config(font=("Times New Roman", 16))
+    provinceMenu["menu"].config(font=("Times New Roman", 16))
 
-    monthlyIncomeLabel = tk.Label(root, text="Employment Income \n" + "$".rjust(36), font=('Times New Roman', 18), bg='white', width=50, anchor="w", justify="left")
-    monthlyIncomeLabel.place(x=75, y=250)
-    monthlyIncome = tk.Entry(root, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
-    monthlyIncome.place(x=315, y=280)
+    paymentFrequency = StringVar(calculatorFrame)
+    paymentFrequency.set("Payment Frequency")
+    paymentFrequencyMenu = OptionMenu(calculatorFrame, paymentFrequency, "Daily" ,"Weekly", "Bi-Weekly", "Bi-Monthly", "Monthly", "Annually")
+    paymentFrequencyMenu.grid(row=0, column=2, rowspan=2, columnspan=2, padx=10, pady=5, sticky="nsew")
+    paymentFrequencyMenu.config(font=("Times New Roman", 16))
+    paymentFrequencyMenu["menu"].config(font=("Times New Roman", 16))
 
-    rrspContributionLabel = tk.Label(root, text="RRSP Contribution \n" + "$".rjust(36), font=('Times New Roman', 18), bg='white', width=50, anchor="w", justify="left")
-    rrspContributionLabel.place(x=75, y=325)
-    rrspContribution = tk.Entry(root, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
-    rrspContribution.place(x=315, y=355)
+    inputLabels = [
+        "Income",
+        "RRSP Contribution",
+        "FHSA Income",
+        "Capitol Gains"
+    ]
 
-    fhsaContributionLabel = tk.Label(root, text="FHSA Contribution \n" + "$".rjust(36), font=('Times New Roman', 18), bg='white', width=50, anchor="w", justify="left")
-    fhsaContributionLabel.place(x=75, y=400)
-    fhsaContribution = tk.Entry(root, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
-    fhsaContribution.place(x=315, y=430)
+    for index, (text) in enumerate(inputLabels):
+        rowNumber = 2 + (index * 2)
+        label = tk.Label(calculatorFrame, text=text, font=("Times New Roman", 24), bg="white")
+        label.grid(row=rowNumber, column=0, rowspan=2, padx=10, pady=10, sticky="nsew")
 
-    capitalGainsLabel = tk.Label(root, text="Capital Gains \n" + "$".rjust(36), font=('Times New Roman', 18), bg='white', width=50, anchor="w", justify="left")
-    capitalGainsLabel.place(x=75, y=475)
-    capitalGains = tk.Entry(root, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
-    capitalGains.place(x=315, y=505)
+    for index, text in enumerate(inputLabels):
+        rowNumber = 2 + (index * 2)
+        entry = tk.Entry(calculatorFrame, font=("Times New Roman", 24), highlightbackground="black", highlightcolor="black", highlightthickness="2")
+        entry.grid(row=rowNumber, column=1, rowspan=2, padx=10, pady=10, sticky="nsew")
 
-    calculateButton = tk.Button(root, text="Calculate!", font=('Times New Roman', 20), command=lambda: calculate())
-    calculateButton.place(x=75, y=575, height=50, width=370)
+    outputLabels = [
+        "Take Home Pay",
+        "Gross Income",
+        "Provincial Taxes",
+        "Federal Taxes",
+        "CPP Contributions",
+        "EI Contributions",
+        "FHSA Deductions",
+        "RRSP Deductions"
+    ]
 
-    takeHomeLabel = tk.Label(root, text="Take Home Pay: $ 0.00 ", font=('Times New Roman', 22), bg='white')
-    takeHomeLabel.place(x=700, y=225)
+    for index, (text) in enumerate(outputLabels):
+        rowNumber = index + 2
+        label = tk.Label(calculatorFrame, text=text, font=("Times New Roman", 16), bg="white")
+        label.grid(row=rowNumber, column=2, padx=10, pady=5, sticky="nsew")
 
-    grossIncomeLabel = tk.Label(root, text="Gross Income: $ 0.00", font=('Times New Roman', 15), bg='white')
-    grossIncomeLabel.place(x=797, y=275)
+    outputValues = []
 
-    provincialTaxesLabel = tk.Label(root, text="Provincial Taxes: $ 0.00 ", font=('Times New Roman', 15), bg='white')
-    provincialTaxesLabel.place(x=771, y=315)
+    #fix the following
 
-    federalTaxesLabel = tk.Label(root, text="Federal Taxes: $ 0.00 ", font=('Times New Roman', 15), bg='white')
-    federalTaxesLabel.place(x=792, y=355)
+    for index, text in enumerate(outputValues):
+        rowNumber = index + 2
 
-    cppContributionLabel = tk.Label(root, text="CPP Contribution: $ 0.00 ", font=('Times New Roman', 15), bg='white')
-    cppContributionLabel.place(x=766, y=395)
+        valueLabel = tk.Label(calculatorFrame, text="$ 0.00", font=("Times New Roman", 16), bg="White")
+        valueLabel.grid(row=rowNumber, column=3, padx=10, pady=5, sticky="nsew")
 
-    eiContributionLabel = tk.Label(root, text="EI Contribution: $ 0.00 ", font=('Times New Roman', 15), bg='white')
-    eiContributionLabel.place(x=784, y= 435)
+        outputValues.append(valueLabel)
 
-    fhsaDeductionLabel = tk.Label(root, text="FHSA Deduction: $ 0.00 ", font=('Times New Roman', 15), bg='white')
-    fhsaDeductionLabel.place(x=769, y=475)
+    calculateButton = tk.Button(calculatorFrame, text="Calculate!", font=('Times New Roman', 20), command=lambda: calculate())
+    calculateButton.grid(row=12, column=1, rowspan=2, columnspan=2, sticky="nsew")
 
-    rrspDeductionLabel = tk.Label(root, text="RRSP Deduction: $ 0.00 ", font=('Times New Roman', 15), bg='white')
-    rrspDeductionLabel.place(x=772, y=515)
+    for i in range(16):
+        calculatorFrame.rowconfigure(i, weight=1, uniform="row")
+    for j in range(4):
+        calculatorFrame.columnconfigure(j, weight=1, uniform="col")
 
-    backButton = tk.Button(root, text="Back", font=('Times New Roman', 12), command=lambda: mainScreen(root))
-    backButton.place(x=1050, y=600, height=50, width=100)
+    backButton(calculatorFrame, mainScreen)
 
     def calculate():
 
