@@ -16,12 +16,12 @@ def taxCalculator(root, mainScreen):
     provinceMenu.config(font=("Times New Roman", 16))
     provinceMenu["menu"].config(font=("Times New Roman", 16))
 
-    paymentFrequency = StringVar(calculatorFrame)
-    paymentFrequency.set("Payment Frequency")
-    paymentFrequencyMenu = OptionMenu(calculatorFrame, paymentFrequency, "Daily" ,"Weekly", "Bi-Weekly", "Bi-Monthly", "Monthly", "Annually")
-    paymentFrequencyMenu.grid(row=0, column=2, rowspan=2, columnspan=2, padx=10, pady=5, sticky="nsew")
-    paymentFrequencyMenu.config(font=("Times New Roman", 16))
-    paymentFrequencyMenu["menu"].config(font=("Times New Roman", 16))
+    payPeriod = StringVar(calculatorFrame)
+    payPeriod.set("Pay Period")
+    payPeriodMenu = OptionMenu(calculatorFrame, payPeriod, "Daily" ,"Weekly", "Bi-Weekly", "Bi-Monthly", "Monthly", "Annually")
+    payPeriodMenu.grid(row=0, column=2, rowspan=2, columnspan=2, padx=10, pady=5, sticky="nsew")
+    payPeriodMenu.config(font=("Times New Roman", 16))
+    payPeriodMenu["menu"].config(font=("Times New Roman", 16))
 
     inputLabels = [
         "Income",
@@ -30,15 +30,17 @@ def taxCalculator(root, mainScreen):
         "Capitol Gains"
     ]
 
-    for index, (text) in enumerate(inputLabels):
-        rowNumber = 2 + (index * 2)
+    for i, (text) in enumerate(inputLabels):
+        rowNumber = 2 + (i * 2)
         label = tk.Label(calculatorFrame, text=text, font=("Times New Roman", 24), bg="white")
         label.grid(row=rowNumber, column=0, rowspan=2, padx=10, pady=10, sticky="nsew")
 
-    for index, text in enumerate(inputLabels):
-        rowNumber = 2 + (index * 2)
+    entries = []
+    for i, text in enumerate(inputLabels):
+        rowNumber = 2 + (i * 2)
         entry = tk.Entry(calculatorFrame, font=("Times New Roman", 24), highlightbackground="black", highlightcolor="black", highlightthickness="2")
         entry.grid(row=rowNumber, column=1, rowspan=2, padx=10, pady=10, sticky="nsew")
+        entries.append(entry)
 
     outputLabels = [
         "Take Home Pay",
@@ -51,21 +53,16 @@ def taxCalculator(root, mainScreen):
         "RRSP Deductions"
     ]
 
-    for index, (text) in enumerate(outputLabels):
-        rowNumber = index + 2
+    for i, (text) in enumerate(outputLabels):
+        rowNumber = i + 2
         label = tk.Label(calculatorFrame, text=text, font=("Times New Roman", 16), bg="white")
         label.grid(row=rowNumber, column=2, padx=10, pady=5, sticky="nsew")
 
     outputValues = []
-
-    #fix the following
-
-    for index, text in enumerate(outputValues):
-        rowNumber = index + 2
-
+    for i, text in enumerate(outputLabels):
+        rowNumber = i + 2
         valueLabel = tk.Label(calculatorFrame, text="$ 0.00", font=("Times New Roman", 16), bg="White")
         valueLabel.grid(row=rowNumber, column=3, padx=10, pady=5, sticky="nsew")
-
         outputValues.append(valueLabel)
 
     calculateButton = tk.Button(calculatorFrame, text="Calculate!", font=('Times New Roman', 20), command=lambda: calculate())
@@ -85,151 +82,101 @@ def taxCalculator(root, mainScreen):
             messagebox.showerror("Input Error", "Please select a province.")
             return
 
+        userPayPeriod = payPeriod.get()
+        if userPayPeriod == "Pay Period":
+            messagebox.showerror("Input Error", "Please select a pay period")
+            return
+
         try:
-            userMonthlyIncome = float(monthlyIncome.get().replace(",", "").strip() or 0)
-            userRRSPcontribution = float(rrspContribution.get().replace(",", "").strip() or 0)
-            userFHSAcontribution = float(fhsaContribution.get().replace(",", "").strip() or 0)
-            userCapitalGains = float(capitalGains.get().replace(",", "").strip() or 0)
+            userIncome = float(entries[0].get().replace(",", "").strip() or 0)
+            userRRSPcontribution = float(entries[1].get().replace(",", "").strip() or 0)
+            userFHSAcontribution = float(entries[2].get().replace(",", "").strip() or 0)
+            userCapitalGains = float(entries[3].get().replace(",", "").strip() or 0)
         except ValueError:
             messagebox.showerror('Input Error', 'Error: Please Enter a Valid Number')
             return
+
+        #Take userIncome and make a loop for the different pay periods for the 3 lines below
 
         rrspDeduction = min((userRRSPcontribution * 12), (userMonthlyIncome * 12 * 0.18), 31560)
         fhsaDeduction = min((userFHSAcontribution * 12),8000)
         income = (userMonthlyIncome * 12) + userCapitalGains - rrspDeduction - fhsaDeduction
 
-        if userProvince == "Alberta":
+        federalTaxInfo = {
+            "brackets" : [57375, 114750, 177882, 253414],
+            "rates" : [0.145, 0.205, 0.26, 0.29, 0.33]
+        }
 
-            provincialTaxBracket = [60000, 151234, 181481, 241974, 362961]
-            provincialTaxRate = [0.08, 0.10, 0.12, 0.13, 0.14, 0.15]
-            provincialTax = calculateTax(income, provincialTaxBracket, provincialTaxRate)
+        provincialTaxInfo = {
+            "Alberta" : {
+                "brackets": [60000, 151234, 181481, 241974, 362961],
+                "rates": [0.08, 0.10, 0.12, 0.13, 0.14, 0.15]
+            },
 
-            federalTaxBracket = [57375, 114750, 177882, 253414]
-            federalTaxRate = [0.145, 0.205, 0.26, 0.29, 0.33]
-            federalTax = calculateTax(income, federalTaxBracket, federalTaxRate)
+            "British Columbia" : {
+                "brackets" : [49279, 98560, 113158, 137407, 186306, 259829],
+                "rates" : [0.0506, 0.077, 0.105, 0.1229, 0.147, 0.168, 0.205]
+            },
 
-        elif userProvince == "British Columbia":
+            "Manitoba" :{
+                "brackets" : [47564, 101200],
+                "rates" : [0.108, 0.1275, 0.174]
+            },
 
-            provincialTaxBracket = [49279, 98560, 113158, 137407, 186306, 259829]
-            provincialTaxRate = [0.0506, 0.077, 0.105, 0.1229, 0.147, 0.168, 0.205]
-            provincialTax = calculateTax(income, provincialTaxBracket, provincialTaxRate)
+            "New Brunswick" : {
+                "brackets" : [51306, 102614, 190060],
+                "rates" : [0.094, 0.14, 0.16, 0.195]
+            },
 
-            federalTaxBracket = [57375, 114750, 177882, 253414]
-            federalTaxRate = [0.145, 0.205, 0.26, 0.29, 0.33]
-            federalTax = calculateTax(income, federalTaxBracket, federalTaxRate)
+            "Newfoundland and Labrador" : {
+                "brackets" : [44192, 88382, 157792, 220910, 282214, 564429, 1128858],
+                "rates" : [0.087, 0.145, 0.158, 0.178, 0.198, 0.208, 0.213, 0.218]
+            },
 
-        elif userProvince == "Manitoba":
+            "Nova Scotia" : {
+                "brackets"  :[30507, 61015, 95883, 154650],
+                "rates" : [0.0879, 0.1495, 0.1667, 0.175, 0.21]
+            },
 
-            provincialTaxBracket = [47564, 101200]
-            provincialTaxRate = [0.108, 0.1275, 0.174]
-            provincialTax = calculateTax(income, provincialTaxBracket, provincialTaxRate)
+            "Northwest Territories" : {
+                "brackets" : [51964, 103930, 168967],
+                "rates" : [0.059, 0.086, 0.122, 0.1405]
+            },
 
-            federalTaxBracket = [57375, 114750, 177882, 253414]
-            federalTaxRate = [0.145, 0.205, 0.26, 0.29, 0.33]
-            federalTax = calculateTax(income, federalTaxBracket, federalTaxRate)
+            "Nunavut" : {
+                "brackets" : [54707, 109413, 177881],
+                "rates" : [0.04, 0.07, 0.09, 0.115]
+            },
 
-        elif userProvince == "New Brunswick":
+            "Ontario" : {
+                "brackets" : [52886, 105775, 150000, 220000],
+                "rates" : [0.0505, 0.0915, 0.1116, 0.1216, 0.1316]
+            },
 
-            provincialTaxBracket = [51306, 102614, 190060]
-            provincialTaxRate = [0.094, 0.14, 0.16, 0.195]
-            provincialTax = calculateTax(income, provincialTaxBracket, provincialTaxRate)
+            "Prince Edward Island" : {
+                "brackets" : [33328, 64656, 105000, 140000],
+                "rates" : [0.095, 0.1347, 0.166, 0.1762, 0.19]
+            },
 
-            federalTaxBracket = [57375, 114750, 177882, 253414]
-            federalTaxRate = [0.145, 0.205, 0.26, 0.29, 0.33]
-            federalTax = calculateTax(income, federalTaxBracket, federalTaxRate)
+            "Quebec" : {
+                "brackets"  :[53225, 106495, 129590],
+                "rates" : [0.14, 0.19, 0.24, 0.2575]
+            },
 
-        elif userProvince == "Newfoundland and Labrador":
+            "Saskatchewan" : {
+                "brackets" : [53462, 152750],
+                "rates" : [0.105, 0.125, 0.145]
+            },
 
-            provincialTaxBracket = [44192, 88382, 157792, 220910, 282214, 564429, 1128858]
-            provincialTaxRate = [0.087, 0.145, 0.158, 0.178, 0.198, 0.208, 0.213, 0.218]
-            provincialTax = calculateTax(income, provincialTaxBracket, provincialTaxRate)
+            "Yukon" : {
+                "brackets" : [57375, 114750, 177882, 500000],
+                "rates" : [0.064, 0.09, 0.109, 0.128, 0.15]
+            }
+        }
 
-            federalTaxBracket = [57375, 114750, 177882, 253414]
-            federalTaxRate = [0.145, 0.205, 0.26, 0.29, 0.33]
-            federalTax = calculateTax(income, federalTaxBracket, federalTaxRate)
-
-        elif userProvince == "Nova Scotia":
-
-            provincialTaxBracket = [30507, 61015, 95883, 154650]
-            provincialTaxRate = [0.0879, 0.1495, 0.1667, 0.175, 0.21]
-            provincialTax = calculateTax(income, provincialTaxBracket, provincialTaxRate)
-
-            federalTaxBracket = [57375, 114750, 177882, 253414]
-            federalTaxRate = [0.145, 0.205, 0.26, 0.29, 0.33]
-            federalTax = calculateTax(income, federalTaxBracket, federalTaxRate)
-
-        elif userProvince == "Northwest Territories":
-
-            provincialTaxBracket = [51964, 103930, 168967]
-            provincialTaxRate = [0.059, 0.086, 0.122, 0.1405]
-            provincialTax = calculateTax(income, provincialTaxBracket, provincialTaxRate)
-
-            federalTaxBracket = [57375, 114750, 177882, 253414]
-            federalTaxRate = [0.145, 0.205, 0.26, 0.29, 0.33]
-            federalTax = calculateTax(income, federalTaxBracket, federalTaxRate)
-
-        elif userProvince == "Nunavut":
-
-            provincialTaxBracket = [54707, 109413, 177881]
-            provincialTaxRate = [0.04, 0.07, 0.09, 0.115]
-            provincialTax = calculateTax(income, provincialTaxBracket, provincialTaxRate)
-
-            federalTaxBracket = [57375, 114750, 177882, 253414]
-            federalTaxRate = [0.145, 0.205, 0.26, 0.29, 0.33]
-            federalTax = calculateTax(income, federalTaxBracket, federalTaxRate)
-
-        elif userProvince == "Ontario":
-
-            provincialTaxBracket = [52886, 105775 ,150000, 220000]
-            provincialTaxRate = [0.0505, 0.0915, 0.1116, 0.1216, 0.1316]
-            provincialTax = calculateTax(income, provincialTaxBracket, provincialTaxRate)
-
-            federalTaxBracket = [57375, 114750, 177882, 253414]
-            federalTaxRate = [0.145, 0.205, 0.26, 0.29, 0.33]
-            federalTax = calculateTax(income, federalTaxBracket, federalTaxRate)
-
-        elif userProvince == "Prince Edward Island":
-
-            provincialTaxBracket = [33328, 64656, 105000, 140000]
-            provincialTaxRate = [0.095, 0.1347, 0.166, 0.1762, 0.19]
-            provincialTax = calculateTax(income, provincialTaxBracket, provincialTaxRate)
-
-            federalTaxBracket = [57375, 114750, 177882, 253414]
-            federalTaxRate = [0.145, 0.205, 0.26, 0.29, 0.33]
-            federalTax = calculateTax(income, federalTaxBracket, federalTaxRate)
-
-        elif userProvince == "Quebec":
-
-            provincialTaxBracket = [53225, 106495, 129590]
-            provincialTaxRate = [0.14, 0.19, 0.24, 0.2575]
-            provincialTax = calculateTax(income, provincialTaxBracket, provincialTaxRate)
-
-            federalTaxBracket = [57375, 114750, 177882, 253414]
-            federalTaxRate = [0.145, 0.205, 0.26, 0.29, 0.33]
-            federalTax = calculateTax(income, federalTaxBracket, federalTaxRate)
-
-        elif userProvince == "Saskatchewan":
-
-            provincialTaxBracket = [53462, 152750]
-            provincialTaxRate = [0.105, 0.125, 0.145]
-            provincialTax = calculateTax(income, provincialTaxBracket, provincialTaxRate)
-
-            federalTaxBracket = [57375, 114750, 177882, 253414]
-            federalTaxRate = [0.145, 0.205, 0.26, 0.29, 0.33]
-            federalTax = calculateTax(income, federalTaxBracket, federalTaxRate)
-
-        elif userProvince == "Yukon":
-
-            provincialTaxBracket = [57375, 114750, 177882, 500000]
-            provincialTaxRate = [0.064, 0.09, 0.109, 0.128, 0.15]
-            provincialTax = calculateTax(income, provincialTaxBracket, provincialTaxRate)
-
-            federalTaxBracket = [57375, 114750, 177882, 253414]
-            federalTaxRate = [0.145, 0.205, 0.26, 0.29, 0.33]
-            federalTax = calculateTax(income, federalTaxBracket, federalTaxRate)
-
-        else:
-            exit()
+        userProvinceInfo = provincialTaxInfo[userProvince]
+        provincialTax = calculateTax(income, userProvinceInfo["brackets"], userProvinceInfo["rates"])
+        federalTax = calculateTax(income, federalTaxInfo["brackets"], federalTaxInfo["rates"])
 
         if income <=67800:
             cppContribution = income * 0.0491
@@ -244,14 +191,19 @@ def taxCalculator(root, mainScreen):
         takeHome = income - federalTax - provincialTax - cppContribution - eiContribution
         grossIncome = userMonthlyIncome * 12
 
-        grossIncomeLabel.config(text=f"Gross Income : $ {grossIncome:.2f}")
-        provincialTaxesLabel.config(text=f"Provincial Taxes : $ {provincialTax:.2f}")
-        federalTaxesLabel.config(text=f"Federal Taxes : $ {federalTax:.2f}")
-        cppContributionLabel.config(text=f"CPP Contribution : $ {cppContribution:.2f}")
-        eiContributionLabel.config(text=f"EI Contribution : $ {eiContribution:.2f}")
-        rrspDeductionLabel.config(text=f"RRSP Deduction : $ {rrspDeduction:.2f}")
-        fhsaDeductionLabel.config(text=f"FHSA Deduction : $ {fhsaDeduction:.2f}")
-        takeHomeLabel.config(text=f"Take Home Pay: $ {takeHome:.2f}")
+
+        userValues = [
+            takeHome,
+            grossIncome,
+            provincialTax,
+            federalTax,
+            cppContribution,
+            eiContribution,
+            fhsaDeduction,
+            rrspDeduction
+        ]
+        for k in range(len(outputValues)):
+            outputValues[k].config(text=f"$ {userValues[k]:.2f}")
 
         return
 

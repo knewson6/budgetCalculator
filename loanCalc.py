@@ -138,6 +138,8 @@ def loanCalculator(root, mainScreen):
                 opt["paymentLabel"].config(text=f"Payment: $ {userPayment:.2f}")
 
 
+    #Work on loan()
+
     def loan():
         frames(root)
 

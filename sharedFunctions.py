@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
+import numpy as np
+import math
 
 
 def frames(root):
@@ -24,3 +26,26 @@ def backButton(parent, command, width=10, font=("Times New Roman", 16), xOffset=
     returnButton = tk.Button(parent, text="Back", font=font, width=width, command=command)
     returnButton.place(relx=1.0, rely=1.0, anchor="se", x=-xOffset, y=-yOffset)
     return returnButton
+
+def getChar(prompt, validInput):
+
+    while True:
+        userInput = input(prompt + '\n\t').lower()
+
+        if userInput not in validInput:
+            print('Error Input; please enter one of', validInput)
+        else:
+            return userInput
+
+def getFloat(prompt):
+
+    while True:
+        try:
+            userInput = float(input(prompt + '\n\t$'))
+
+            if userInput <= 0:
+                print('Error Input; please enter a non negative number')
+            else:
+                return userInput
+        except ValueError:
+            print('Error Input; please enter a non negative number with no special characters or letters')
