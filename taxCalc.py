@@ -96,11 +96,37 @@ def taxCalculator(root, mainScreen):
             messagebox.showerror('Input Error', 'Error: Please Enter a Valid Number')
             return
 
-        #Take userIncome and make a loop for the different pay periods for the 3 lines below
+        if userPayPeriod == "Daily":
+            userAnnualIncome = userIncome * 260
+            rrspDeduction = min((userRRSPcontribution * 260), (userAnnualIncome * 0.18), 31560)
+            fhsaDeduction = min((userFHSAcontribution * 260), 8000)
 
-        rrspDeduction = min((userRRSPcontribution * 12), (userMonthlyIncome * 12 * 0.18), 31560)
-        fhsaDeduction = min((userFHSAcontribution * 12),8000)
-        income = (userMonthlyIncome * 12) + userCapitalGains - rrspDeduction - fhsaDeduction
+        elif userPayPeriod == "Weekly":
+            userAnnualIncome = userIncome * 52
+            rrspDeduction = min((userRRSPcontribution * 52), (userAnnualIncome * 0.18), 31560)
+            fhsaDeduction = min((userFHSAcontribution * 52), 8000)
+
+        elif userPayPeriod == "Bi-Weekly":
+            userAnnualIncome = userIncome * 26
+            rrspDeduction = min((userRRSPcontribution * 26), (userAnnualIncome * 0.18), 31560)
+            fhsaDeduction = min((userFHSAcontribution * 26), 8000)
+
+        elif userPayPeriod == "Bi-Monthly":
+            userAnnualIncome = userIncome * 24
+            rrspDeduction = min((userRRSPcontribution * 24), (userAnnualIncome * 0.18), 31560)
+            fhsaDeduction = min((userFHSAcontribution * 24), 8000)
+
+        elif userPayPeriod == "Monthly":
+            userAnnualIncome = userIncome * 12
+            rrspDeduction = min((userRRSPcontribution * 12), (userAnnualIncome * 0.18), 31560)
+            fhsaDeduction = min((userFHSAcontribution * 12), 8000)
+
+        elif userPayPeriod == "Annually":
+            userAnnualIncome = userIncome
+            rrspDeduction = min(userRRSPcontribution, (userAnnualIncome * 0.18), 31560)
+            fhsaDeduction = min(userFHSAcontribution, 8000)
+
+        income = userAnnualIncome + userCapitalGains - rrspDeduction - fhsaDeduction
 
         federalTaxInfo = {
             "brackets" : [57375, 114750, 177882, 253414],
@@ -189,12 +215,11 @@ def taxCalculator(root, mainScreen):
             eiContribution = 1077.48
 
         takeHome = income - federalTax - provincialTax - cppContribution - eiContribution
-        grossIncome = userMonthlyIncome * 12
 
 
         userValues = [
             takeHome,
-            grossIncome,
+            userAnnualIncome,
             provincialTax,
             federalTax,
             cppContribution,
