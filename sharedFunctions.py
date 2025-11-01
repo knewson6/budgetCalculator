@@ -22,30 +22,7 @@ def frames(root):
     buttonFrame.pack(fill='both', expand=True, padx=25, pady=10)
     return buttonFrame
 
-def backButton(parent, command, width=10, font=("Times New Roman", 16), xOffset=25, yOffset=25):
-    returnButton = tk.Button(parent, text="Back", font=font, width=width, command=command)
-    returnButton.place(relx=1.0, rely=1.0, anchor="se", x=-xOffset, y=-yOffset)
+def backButton(parent, command):
+    returnButton = tk.Button(parent, text="Back", font=("Times New Roman", 16), width=10, command=command)
+    returnButton.place(relx=1.0, rely=1.0, anchor="se", x=-25, y=-25)
     return returnButton
-
-def getChar(prompt, validInput):
-
-    while True:
-        userInput = input(prompt + '\n\t').lower()
-
-        if userInput not in validInput:
-            print('Error Input; please enter one of', validInput)
-        else:
-            return userInput
-
-def getFloat(prompt):
-
-    while True:
-        try:
-            userInput = float(input(prompt + '\n\t$'))
-
-            if userInput <= 0:
-                print('Error Input; please enter a non negative number')
-            else:
-                return userInput
-        except ValueError:
-            print('Error Input; please enter a non negative number with no special characters or letters')

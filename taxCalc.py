@@ -73,7 +73,7 @@ def taxCalculator(root, mainScreen):
     for j in range(4):
         calculatorFrame.columnconfigure(j, weight=1, uniform="col")
 
-    backButton(calculatorFrame, mainScreen)
+    backButton(calculatorFrame, mainScreen())
 
     def calculate():
 
