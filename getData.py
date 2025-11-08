@@ -26,12 +26,12 @@ def getData(tickers, startDate, endDate):
     if data.empty:
         return None
     
+    info = tic.get_info()
+    
     data['RSI'] = ta.momentum.RSIIndicator(close=data['Close']).rsi()
-    data['MACD_Diff'] = ta.trend.MACD(close=data['Close']).macd_diff()
+    data['MACD'] = ta.trend.MACD(close=data['Close']).macd_diff()
     data['Volatility'] = data['Close'].pct_change().std()
     data['SPOF'] = tic.get_info().get('shortPercentOfFloat')
-    
-    info = tic.get_info()
     
     staticFields = {
         'Ticker': tickers,
@@ -43,17 +43,24 @@ def getData(tickers, startDate, endDate):
     
     for key, value in staticFields.items():
         data[key] = value
-        
+    
     return data.reset_index()
 
-panel = []
-
+panelList = []
 for ticker in tickers:
     df = getData(ticker, startDate, endDate)
     if df is not None:
-        panel.append(df)
+        panelList.append(df)
         
-panel = pd.concat(panel, ignore_index=True)
+panel = pd.concat(panelList, ignore_index=True)
+
+staticFields = ['Ticker', 'Name', 'Industry', 'Currency', 'Sector']
+stockFields = ['Open', 'High', 'Low', 'Close', 'Volume', 'RSI', 'MACD', 'Volatility', 'SPOF']
+
+existingStockFields = [col for col in stockFields if col in panel.columns]
+desiredOrder = ['Date'] + staticFields + existingStockFields
+
+panel = panel[desiredOrder]
 
 load_dotenv("secret.env")
 db_user = "root"
