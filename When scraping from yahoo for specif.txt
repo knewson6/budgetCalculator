@@ -1,0 +1,18 @@
+When scraping from yahoo for specific stocks
+	Date
+	Name
+	Industry
+	Currency
+	Open
+	High
+	Low
+	Close
+	Volume
+	Relative Strength Index (Leading)
+	Moving Average Convergence/Divergence (lagging)
+	Historic Volatility (Lagging)
+	Short Percent of Float (Leading)
+
+Date, Unemployment (FRED), GDP (FRED), Conversion Rate, 10yr Bond Yield (FRED), Market Volatility
+
+SP500 / DOW / TSX / RUSSELL / GOLD / Conversion Rate / Market Volatility
