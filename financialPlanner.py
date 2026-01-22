@@ -4,9 +4,9 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-from budgetPlanner import budgetPlanner
-from taxCalc import taxCalculator
-from loanCalc import loanCalculator
+from Budget.budgetPlanner import budgetPlanner
+from Tax_Calculator.taxCalc import taxCalculator
+from Loan_Calculator.loanCalc import loanCalculator
 from sharedFunctions import frames
 
 def mainScreen(root):

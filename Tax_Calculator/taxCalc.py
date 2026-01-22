@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
@@ -73,7 +77,7 @@ def taxCalculator(root, mainScreen):
     for j in range(4):
         calculatorFrame.columnconfigure(j, weight=1, uniform="col")
 
-    backButton(calculatorFrame, mainScreen())
+    backButton(calculatorFrame, lambda: mainScreen(root))
 
     def calculate():
 
