@@ -1,72 +1,69 @@
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
-from sharedFunctions import frames
+from sharedFunctions import frames, backButton
 
 def loanCalculator(root, mainScreen):
-    frames(root)
+    loanCalc = frames(root)
 
-    mortgageButton = tk.Button(root, text="Mortgage", font=('Times New Roman', 32), command=lambda: mortgage())
-    mortgageButton.place(x=75, y=150, height=300, width=500)
-
-    loanButton = tk.Button(root, text="Loan", font=('Times New Roman', 32), command=lambda: loan())
-    loanButton.place(x=625, y=150, height=300, width=500)
-
-    backButton = tk.Button(root, text="Back", font=('Times New Roman', 12), command=lambda: mainScreen(root))
-    backButton.place(x=1050, y=600, height=50, width=100)
+    #Format the mortgage calculator
 
     def mortgage():
-        frames(root)
+        mortFrame = frames(root)
 
-        houseAmountLabel = tk.Label(root, text="House Amount:" + "$".rjust(8), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
+        houseAmountLabel = tk.Label(mortFrame, text="House Amount:" + "$".rjust(8), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
         houseAmountLabel.place(x=125, y=125)
-        houseAmount = tk.Entry(root, width=15, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+        houseAmount = tk.Entry(mortFrame, width=15, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
         houseAmount.place(x=375, y=128)
 
-        interestRateLabel = tk.Label(root, text="Interest Rate:" + "%".rjust(4), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
+        interestRateLabel = tk.Label(mortFrame, text="Interest Rate:" + "%".rjust(4), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
         interestRateLabel.place(x=700, y=125)
-        interestRate = tk.Entry(root, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+        interestRate = tk.Entry(mortFrame, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
         interestRate.place(x=900, y=128)
 
         options = []
 
         for i, x in enumerate([75, 425, 785]):
-            downPaymentLabel = tk.Label(root, text="Down Payment:" + "%".rjust(4) + "\n" + "$".rjust(31), font=('Times New Roman', 16), bg='white', width=50, anchor="w", justify="left")
+            downPaymentLabel = tk.Label(mortFrame, text="Down Payment:" + "%".rjust(4) + "\n" + "$".rjust(31), font=('Times New Roman', 16), bg='white', width=50, anchor="w", justify="left")
             downPaymentLabel.place(x=x, y=200)
 
-            downPaymentPercent = tk.Entry(root, width=10, font=('Times New Roman', 16), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+            downPaymentPercent = tk.Entry(mortFrame, width=10, font=('Times New Roman', 16), highlightbackground='black', highlightcolor='black', highlightthickness='2')
             downPaymentPercent.place(x=x+175, y=200)
 
-            downPaymentValue = tk.Entry(root, width=10, font=('Times New Roman', 16), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+            downPaymentValue = tk.Entry(mortFrame, width=10, font=('Times New Roman', 16), highlightbackground='black', highlightcolor='black', highlightthickness='2')
             downPaymentValue.place(x=x+175, y=225)
 
-            amortizationPeriod = StringVar(root)
+            amortizationPeriod = StringVar(mortFrame)
             amortizationPeriod.set("Amortization Period")
-            amortizationPeriodMenu = OptionMenu(root, amortizationPeriod, *[f"{y} Years" for y in range(1, 31)])
+            amortizationPeriodMenu = OptionMenu(mortFrame, amortizationPeriod, *[f"{y} Years" for y in range(1, 31)])
             amortizationPeriodMenu.place(x=x+25, y=275, height=50, width=225)
 
-            paymentFrequency = StringVar(root)
+            paymentFrequency = StringVar(mortFrame)
             paymentFrequency.set("Payment Frequency")
-            paymentFrequencyMenu = OptionMenu(root, paymentFrequency, "Weekly", "Monthly", "Annually")
+            paymentFrequencyMenu = OptionMenu(mortFrame, paymentFrequency, "Weekly", "Monthly", "Annually")
             paymentFrequencyMenu.place(x=x+25, y=325, height=50, width=225)
 
-            totalAmountLabel = tk.Label(root, text="Total Amount: $ 0.00 ", font=('Times New Roman', 18), bg='white')
+            totalAmountLabel = tk.Label(mortFrame, text="Total Amount: $ 0.00 ", font=('Times New Roman', 18), bg='white')
             totalAmountLabel.place(x=x, y=400)
 
-            insuranceLabel = tk.Label(root, text="Insurance: $ 0.00 ", font=('Times New Roman', 18), bg='white')
+            insuranceLabel = tk.Label(mortFrame, text="Insurance: $ 0.00 ", font=('Times New Roman', 18), bg='white')
             insuranceLabel.place(x=x, y=430)
 
-            paymentLabel = tk.Label(root, text="Payment: $ 0.00 ", font=('Times New Roman', 20), bg='white')
+            paymentLabel = tk.Label(mortFrame, text="Payment: $ 0.00 ", font=('Times New Roman', 20), bg='white')
             paymentLabel.place(x=x, y=475)
 
             options.append({"downPaymentPercent": downPaymentPercent, "downPaymentValue": downPaymentValue, "amortizationPeriod": amortizationPeriod, "paymentFrequency": paymentFrequency,
                             "totalAmountLabel": totalAmountLabel, "insuranceLabel": insuranceLabel, "paymentLabel": paymentLabel})
 
-        calculateButton = tk.Button(root, text="Calculate", font=('Times New Roman', 20), command=lambda: calculate())
+        calculateButton = tk.Button(mortFrame, text="Calculate", font=('Times New Roman', 20), command=lambda: calculate())
         calculateButton.place(x=375, y=550, height=50, width=370)
 
-        returnButton = tk.Button(root, text="Back", font=('Times New Roman', 12), command=lambda: loanCalculator(root, mainScreen))
+        returnButton = tk.Button(mortFrame, text="Back", font=('Times New Roman', 12), command=lambda: loanCalculator(mortFrame, mainScreen))
         returnButton.place(x=1050, y=600, height=50, width=100)
 
         def calculate():
@@ -141,17 +138,29 @@ def loanCalculator(root, mainScreen):
     #Work on loan()
 
     def loan():
-        frames(root)
+        loanFrame = frames(root)
 
-        loanAmountLabel = tk.Label(root, text="Loan Amount:" + "$".rjust(8), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
+        loanAmountLabel = tk.Label(loanFrame, text="Loan Amount:" + "$".rjust(8), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
         loanAmountLabel.place(x=125, y=125)
-        loanAmount = tk.Entry(root, width=15, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+        loanAmount = tk.Entry(loanFrame, width=15, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
         loanAmount.place(x=360, y=128)
 
-        interestRateLabel = tk.Label(root, text="Interest Rate:" + "%".rjust(4), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
+        interestRateLabel = tk.Label(loanFrame, text="Interest Rate:" + "%".rjust(4), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
         interestRateLabel.place(x=700, y=125)
-        interestRate = tk.Entry(root, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+        interestRate = tk.Entry(loanFrame, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
         interestRate.place(x=900, y=128)
 
-        returnButton = tk.Button(root, text="Back", font=('Times New Roman', 12), command=lambda: loanCalculator(root, mainScreen))
+        returnButton = tk.Button(loanFrame, text="Back", font=('Times New Roman', 12), command=lambda: loanCalculator(root, mainScreen))
         returnButton.place(x=1050, y=600, height=50, width=100)
+
+    mortgageButton = tk.Button(loanCalc, text="Mortgage", font=('Times New Roman', 32), height = 10, width = 22, command=lambda: mortgage())
+    mortgageButton.grid(row=0, column=0, rowspan=1, columnspan=1, padx=15, pady=15, sticky="nsew")
+
+    loanButton = tk.Button(loanCalc, text="Loan", font=('Times New Roman', 32), height = 10, width = 22, command=lambda: loan())
+    loanButton.grid(row=0, column=1, rowspan=1, columnspan=1, padx=15, pady=15, sticky="nsew")
+
+    loanCalc.rowconfigure(0, weight=1)
+    loanCalc.columnconfigure(0, weight=1)
+    loanCalc.columnconfigure(1, weight=1)
+
+    backButton(mainScreen, lambda: mainScreen(root))
