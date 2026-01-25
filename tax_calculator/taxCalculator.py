@@ -1,13 +1,8 @@
-import sys
-import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
-from sharedFunctions import frames, backButton
-
+from ..sharedFunctions import frames, backButton
 
 def taxCalc(root, mainScreen):
     calculatorFrame = frames(root)
