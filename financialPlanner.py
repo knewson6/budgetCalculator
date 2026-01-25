@@ -6,7 +6,7 @@ from tkinter import *
 from tkinter import ttk
 from Budget.budgetPlanner import budgetPlanner
 from Tax_Calculator.taxCalc import taxCalculator
-from Loan_Calculator.loanCalc import loanCalculator
+from Loan_Calculator.loan.loanCalc import loan
 from sharedFunctions import frames
 
 def mainScreen(root):
@@ -20,7 +20,7 @@ def mainScreen(root):
         ("Budget Planner", lambda: budgetPlanner(root, mainScreen)),
         ("Savings Tracker", None),
         ("Income Tax Calculator", lambda: taxCalculator(root, mainScreen)),
-        ("Loan/Mortgage Calculator", lambda: loanCalculator(root, mainScreen)),
+        ("Loan/Mortgage Calculator", lambda: loan(root, mainScreen)),
         ("Debt Payoff Calculator", None),
         ("Stock Guide", None)
     ]

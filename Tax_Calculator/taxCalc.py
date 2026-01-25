@@ -236,7 +236,6 @@ def taxCalculator(root, mainScreen):
 
         return
 
-
 def calculateTax(income, taxBracket, taxRate):
 
     tax = 0
