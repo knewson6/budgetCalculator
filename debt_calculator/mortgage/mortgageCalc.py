@@ -1,19 +1,15 @@
-import sys
-import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 import tkinter as tk
 from logging import root
-from budgetCalculator.Loan_Calculator.loanCalc import loanCalculator
-from budgetCalculator.financialPlanner import mainScreen
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
+from loanScreen import loanScreen
+from budgetCalculator.financialPlanner import mainScreen
 from sharedFunctions import frames, backButton
 
 # Format the mortgage calculator
 
-def mortgage():
+def mortgageCalculator():
         mortFrame = frames(root)
 
         houseAmountLabel = tk.Label(mortFrame, text="House Amount:" + "$".rjust(8), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
@@ -63,7 +59,7 @@ def mortgage():
         calculateButton = tk.Button(mortFrame, text="Calculate", font=('Times New Roman', 20), command=lambda: calculate())
         calculateButton.place(x=375, y=550, height=50, width=370)
 
-        backButton(mortFrame, lambda: loanCalculator(root, mainScreen))
+        backButton(mortFrame, lambda: loanScreen(root, mainScreen))
 
         def calculate():
             try:

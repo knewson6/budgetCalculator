@@ -4,10 +4,9 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-from Budget.budgetPlanner import budgetPlanner
-from Tax_Calculator.taxCalc import taxCalculator
-from Loan_Calculator.loan.loanCalc import loan
 from sharedFunctions import frames
+from tax_calculator.taxCalculator import taxCalc
+from debt_calculator.loan.loanCalculator import loanCalc
 
 def mainScreen(root):
 
@@ -17,10 +16,10 @@ def mainScreen(root):
     buttonFrame = frames(root)
 
     buttons = [
-        ("Budget Planner", lambda: budgetPlanner(root, mainScreen)),
+        ("Budget Planner", None),
         ("Savings Tracker", None),
-        ("Income Tax Calculator", lambda: taxCalculator(root, mainScreen)),
-        ("Loan/Mortgage Calculator", lambda: loan(root, mainScreen)),
+        ("Income Tax Calculator", lambda: taxCalc(root, mainScreen)),
+        ("Loan/Mortgage Calculator", lambda: loanCalc(root, mainScreen)),
         ("Debt Payoff Calculator", None),
         ("Stock Guide", None)
     ]

@@ -9,7 +9,7 @@ from tkinter import ttk
 from sharedFunctions import frames, backButton
 
 
-def taxCalculator(root, mainScreen):
+def taxCalc(root, mainScreen):
     calculatorFrame = frames(root)
 
     provinces = StringVar(calculatorFrame)
