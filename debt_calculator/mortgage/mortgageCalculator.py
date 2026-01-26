@@ -3,13 +3,13 @@ from logging import root
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
-from loanScreen import loanScreen
-from budgetCalculator.financialPlanner import mainScreen
+from loanScreen import loan_screen
+from ...financialPlanner import mainScreen
 from sharedFunctions import frames, backButton
 
 # Format the mortgage calculator
 
-def mortgageCalculator():
+def mortgageCalc(root, mainScreen):
         mortFrame = frames(root)
 
         houseAmountLabel = tk.Label(mortFrame, text="House Amount:" + "$".rjust(8), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
@@ -59,7 +59,7 @@ def mortgageCalculator():
         calculateButton = tk.Button(mortFrame, text="Calculate", font=('Times New Roman', 20), command=lambda: calculate())
         calculateButton.place(x=375, y=550, height=50, width=370)
 
-        backButton(mortFrame, lambda: loanScreen(root, mainScreen))
+        backButton(mortFrame, lambda: loan_screen(root, mainScreen))
 
         def calculate():
             try:

@@ -1,16 +1,16 @@
 import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
 import tkinter as tk
 from logging import root
-from budgetCalculator.financialPlanner import mainScreen
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
 from sharedFunctions import frames, backButton
 
 def loanCalc():
+        from financialPlanner import mainScreen
         loanFrame = frames(root)
 
         loanAmountLabel = tk.Label(loanFrame, text="Loan Amount:" + "$".rjust(8), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
