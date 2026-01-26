@@ -10,7 +10,7 @@ from tkinter import *
 from tkinter import ttk
 from sharedFunctions import frames
 from tax_calculator.taxCalculator import taxCalc
-from debt_calculator.loan.loanCalculator import loanCalc
+from debt_calculator.loan.loanCalculator import loan_screen
 
 def mainScreen(root):
 
@@ -23,7 +23,7 @@ def mainScreen(root):
         ("Budget Planner", None),
         ("Savings Tracker", None),
         ("Income Tax Calculator", lambda: taxCalc(root, mainScreen)),
-        ("Loan/Mortgage Calculator", lambda: loanCalc(root, mainScreen)),
+        ("Loan/Mortgage Calculator", lambda: loan_screen(root, mainScreen)),
         ("Debt Payoff Calculator", None),
         ("Stock Guide", None)
     ]

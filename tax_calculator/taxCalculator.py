@@ -11,19 +11,19 @@ from sharedFunctions import frames, backButton
 # make sure contribution limits are still up to date
 
 def taxCalc(root, mainScreen):
-    calculatorFrame = frames(root)
+    window = frames(root)
 
-    provinces = StringVar(calculatorFrame)
+    provinces = StringVar(window)
     provinces.set("Pick a Province or Territory")
-    provinceMenu = OptionMenu(calculatorFrame, provinces ,"Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories",
+    provinceMenu = OptionMenu(window, provinces ,"Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories",
                               "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon")
     provinceMenu.grid(row=0, column=0, rowspan=2, columnspan=2, padx=10, pady=5, sticky="nsew")
     provinceMenu.config(font=("Times New Roman", 16))
     provinceMenu["menu"].config(font=("Times New Roman", 16))
 
-    payPeriod = StringVar(calculatorFrame)
+    payPeriod = StringVar(window)
     payPeriod.set("Pay Period")
-    payPeriodMenu = OptionMenu(calculatorFrame, payPeriod, "Daily" ,"Weekly", "Bi-Weekly", "Bi-Monthly", "Monthly", "Annually")
+    payPeriodMenu = OptionMenu(window, payPeriod, "Daily" ,"Weekly", "Bi-Weekly", "Bi-Monthly", "Monthly", "Annually")
     payPeriodMenu.grid(row=0, column=2, rowspan=2, columnspan=2, padx=10, pady=5, sticky="nsew")
     payPeriodMenu.config(font=("Times New Roman", 16))
     payPeriodMenu["menu"].config(font=("Times New Roman", 16))
@@ -37,13 +37,13 @@ def taxCalc(root, mainScreen):
 
     for i, (text) in enumerate(inputLabels):
         rowNumber = 2 + (i * 2)
-        label = tk.Label(calculatorFrame, text=text, font=("Times New Roman", 24), bg="white")
+        label = tk.Label(window, text=text, font=("Times New Roman", 24), bg="white")
         label.grid(row=rowNumber, column=0, rowspan=2, padx=10, pady=10, sticky="nsew")
 
     entries = []
     for i, text in enumerate(inputLabels):
         rowNumber = 2 + (i * 2)
-        entry = tk.Entry(calculatorFrame, font=("Times New Roman", 24), highlightbackground="black", highlightcolor="black", highlightthickness="2")
+        entry = tk.Entry(window, font=("Times New Roman", 24), highlightbackground="black", highlightcolor="black", highlightthickness="2")
         entry.grid(row=rowNumber, column=1, rowspan=2, padx=10, pady=10, sticky="nsew")
         entries.append(entry)
 
@@ -60,25 +60,25 @@ def taxCalc(root, mainScreen):
 
     for i, (text) in enumerate(outputLabels):
         rowNumber = i + 2
-        label = tk.Label(calculatorFrame, text=text, font=("Times New Roman", 16), bg="white")
+        label = tk.Label(window, text=text, font=("Times New Roman", 16), bg="white")
         label.grid(row=rowNumber, column=2, padx=10, pady=5, sticky="nsew")
 
     outputValues = []
     for i, text in enumerate(outputLabels):
         rowNumber = i + 2
-        valueLabel = tk.Label(calculatorFrame, text="$ 0.00", font=("Times New Roman", 16), bg="White")
+        valueLabel = tk.Label(window, text="$ 0.00", font=("Times New Roman", 16), bg="White")
         valueLabel.grid(row=rowNumber, column=3, padx=10, pady=5, sticky="nsew")
         outputValues.append(valueLabel)
 
-    calculateButton = tk.Button(calculatorFrame, text="Calculate!", font=('Times New Roman', 20), command=lambda: calculate())
+    calculateButton = tk.Button(window, text="Calculate!", font=('Times New Roman', 20), command=lambda: calculate())
     calculateButton.grid(row=12, column=1, rowspan=2, columnspan=2, sticky="nsew")
 
     for i in range(16):
-        calculatorFrame.rowconfigure(i, weight=1, uniform="row")
+        window.rowconfigure(i, weight=1, uniform="row")
     for j in range(4):
-        calculatorFrame.columnconfigure(j, weight=1, uniform="col")
+        window.columnconfigure(j, weight=1, uniform="col")
 
-    backButton(calculatorFrame, lambda: mainScreen(root))
+    backButton(window, lambda: mainScreen(root))
 
     def calculate():
 
