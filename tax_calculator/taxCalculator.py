@@ -8,6 +8,8 @@ from tkinter import messagebox
 from tkinter import ttk
 from sharedFunctions import frames, backButton
 
+# make sure contribution limits are still up to date
+
 def taxCalc(root, mainScreen):
     calculatorFrame = frames(root)
 

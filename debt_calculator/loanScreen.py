@@ -1,10 +1,12 @@
+import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
-from debt_calculator.mortgage.mortgageCalculator import mortgageCalc
-from loan.loanCalculator import loanCalc
-from ..sharedFunctions import frames, backButton
+from sharedFunctions import frames, backButton
 
 def loan_screen(root, mainScreen):
     screen = frames(root)

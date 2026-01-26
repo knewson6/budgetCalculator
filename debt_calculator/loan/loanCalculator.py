@@ -1,12 +1,13 @@
-import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+import sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import tkinter as tk
 from logging import root
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
+from loanScreen import loan_screen
 from sharedFunctions import frames, backButton
 
 def loanCalc():
@@ -23,5 +24,4 @@ def loanCalc():
         interestRate = tk.Entry(loanFrame, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
         interestRate.place(x=900, y=128)
 
-        returnButton = tk.Button(loanFrame, text="Back", font=('Times New Roman', 12), command=lambda: loanCalculator(root, mainScreen))
-        returnButton.place(x=1050, y=600, height=50, width=100)
+        backButton(mainScreen, lambda: loan_screen(root, mainScreen))

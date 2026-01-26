@@ -1,10 +1,13 @@
+import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import tkinter as tk
 from logging import root
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
 from loanScreen import loan_screen
-from ...financialPlanner import mainScreen
 from sharedFunctions import frames, backButton
 
 # Format the mortgage calculator
