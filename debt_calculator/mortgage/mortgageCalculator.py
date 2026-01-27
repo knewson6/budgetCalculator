@@ -7,9 +7,9 @@ from logging import root
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
-from sharedFunctions import frames, backButton
+from ...sharedFunctions import frames, backButton
 
-# Format the mortgage calculator
+# Format the mortgage calculator into .grid() instead of .place()
 
 def mortgageCalc(root, mainScreen):
         from loanScreen import loan_screen
