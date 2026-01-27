@@ -7,11 +7,12 @@ from logging import root
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
-from loanScreen import loan_screen
 from sharedFunctions import frames, backButton
 
 def loanCalc():
+        from loanScreen import loan_screen
         from financialPlanner import mainScreen
+        
         loanFrame = frames(root)
 
         loanAmountLabel = tk.Label(loanFrame, text="Loan Amount:" + "$".rjust(8), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")

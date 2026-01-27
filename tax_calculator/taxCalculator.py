@@ -11,6 +11,8 @@ from sharedFunctions import frames, backButton
 # make sure contribution limits are still up to date
 
 def taxCalc(root, mainScreen):
+    from financialPlanner import mainScreen
+
     window = frames(root)
 
     provinces = StringVar(window)

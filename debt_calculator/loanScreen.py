@@ -7,10 +7,11 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
 from sharedFunctions import frames, backButton
-from mortgage.mortgageCalculator import mortgageCalc
-from loan.loanCalculator import loanCalc
 
 def loan_screen(root, mainScreen):
+    from mortgage.mortgageCalculator import mortgageCalc
+    from loan.loanCalculator import loanCalc
+
     window = frames(root)
 
     mortgageButton = tk.Button(window, text="Mortgage", font=('Times New Roman', 32), height = 10, width = 22, command=lambda: mortgageCalc())

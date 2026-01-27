@@ -7,12 +7,13 @@ from logging import root
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
-from loanScreen import loan_screen
 from sharedFunctions import frames, backButton
 
 # Format the mortgage calculator
 
 def mortgageCalc(root, mainScreen):
+        from loanScreen import loan_screen
+
         mortFrame = frames(root)
 
         houseAmountLabel = tk.Label(mortFrame, text="House Amount:" + "$".rjust(8), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
