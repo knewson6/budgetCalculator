@@ -11,7 +11,6 @@ from sharedFunctions import frames, backButton
 # make sure contribution limits are still up to date
 
 def taxCalc(root, mainScreen):
-    from financialPlanner import mainScreen
 
     window = frames(root)
 
@@ -222,7 +221,6 @@ def taxCalc(root, mainScreen):
             eiContribution = 1077.48
 
         takeHome = income - federalTax - provincialTax - cppContribution - eiContribution
-
 
         userValues = [
             takeHome,
