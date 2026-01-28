@@ -7,24 +7,21 @@ from logging import root
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
-from ...sharedFunctions import frames, backButton
 
 # Format the mortgage calculator into .grid() instead of .place()
 
-def mortgageCalc(root, mainScreen):
-        from loanScreen import loan_screen
-
+def mortgageCalc(root, mainScreen, frames, backButton, loanScreen, loanCalc, mortgageCalc):
         mortFrame = frames(root)
 
         houseAmountLabel = tk.Label(mortFrame, text="House Amount:" + "$".rjust(8), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
-        houseAmountLabel.place(x=125, y=125)
+        houseAmountLabel.grid(row=0, column=0, padx=125, pady=125, sticky="w")
         houseAmount = tk.Entry(mortFrame, width=15, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
-        houseAmount.place(x=375, y=128)
+        houseAmount.grid(row=0, column=1, padx=125, pady=125, sticky="w")
 
         interestRateLabel = tk.Label(mortFrame, text="Interest Rate:" + "%".rjust(4), font=('Times New Roman', 20), bg='white', width=50, anchor="w", justify="left")
-        interestRateLabel.place(x=700, y=125)
+        interestRateLabel.grid(row=1, column=0, padx=125, pady=125, sticky="w")
         interestRate = tk.Entry(mortFrame, width=10, font=('Times New Roman', 18), highlightbackground='black', highlightcolor='black', highlightthickness='2')
-        interestRate.place(x=900, y=128)
+        interestRate.grid(row=1, column=1, padx=125, pady=125, sticky="w")
 
         options = []
 
@@ -63,7 +60,7 @@ def mortgageCalc(root, mainScreen):
         calculateButton = tk.Button(mortFrame, text="Calculate", font=('Times New Roman', 20), command=lambda: calculate())
         calculateButton.place(x=375, y=550, height=50, width=370)
 
-        backButton(mortFrame, lambda: loan_screen(root, mainScreen))
+        backButton(mortFrame, lambda: loanScreen(root, mainScreen, frames, backButton, loanCalc, mortgageCalc))
 
         def calculate():
             try:

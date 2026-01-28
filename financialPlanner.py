@@ -8,10 +8,14 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-from sharedFunctions import frames
-from tax_calculator.taxCalculator import taxCalc
-from debt_calculator.loanScreen import loan_screen
 
+from sharedFunctions import frames, backButton
+
+from tax_calculator.taxCalculator import taxCalc
+
+from debt_calculator.loan_screen import loanScreen
+from debt_calculator.loan.loanCalculator import loanCalc
+from debt_calculator.mortgage.mortgageCalculator import mortgageCalc
 
 def mainScreen(root):
 
@@ -23,8 +27,8 @@ def mainScreen(root):
     buttons = [
         ("Budget Planner", None),
         ("Savings Tracker", None),
-        ("Income Tax Calculator", lambda: taxCalc(root, mainScreen)),
-        ("Loan/Mortgage Calculator", lambda: loan_screen(root, mainScreen)),
+        ("Income Tax Calculator", lambda: taxCalc(root, mainScreen, frames, backButton)),
+        ("Loan/Mortgage Calculator", lambda: loanScreen(root, mainScreen, frames, backButton, loanCalc, mortgageCalc)),
         ("Debt Payoff Calculator", None),
         ("Stock Guide", None)
     ]

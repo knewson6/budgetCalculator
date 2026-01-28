@@ -6,12 +6,10 @@ import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
-from sharedFunctions import frames, backButton
 
 # make sure contribution limits are still up to date
 
-def taxCalc(root, mainScreen):
-
+def taxCalc(root, mainScreen, frames, backButton):
     window = frames(root)
 
     provinces = StringVar(window)
