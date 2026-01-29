@@ -8,7 +8,8 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
 
-# change from .place() to .grid()
+# need to make .grid()
+# take from mortgage calculator and adapt to loan calculator
 
 def loanCalc(root, mainScreen, frames, backButton, loanScreen, mortgageCalc, loanCalc):
         loanFrame = frames(root)
