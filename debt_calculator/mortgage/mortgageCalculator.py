@@ -8,148 +8,157 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
 
-# Format the mortgage calculator into .grid() instead of .place()
-
 def mortgageCalc(root, mainScreen, frames, backButton, loanScreen, loanCalc, mortgageCalc):
         mortFrame = frames(root)
 
-        # Row 0: House Amount and Interest Rate
-        houseAmountLabel = tk.Label(mortFrame, text="House Amount:", font=('Times New Roman', 20), bg='white', anchor="e")
-        houseAmountLabel.grid(row=0, column=0, padx=(50, 5), pady=30, sticky="e")
+        # configure columns for equal spacing (1/3 each for options)
+        mortFrame.grid_columnconfigure(0, weight=1)
+        mortFrame.grid_columnconfigure(1, weight=1)
+        mortFrame.grid_columnconfigure(2, weight=1)
 
-        houseAmount = tk.Entry(mortFrame, font=('Times New Roman', 20), highlightbackground='black', highlightcolor='black', highlightthickness='2', width=15)
-        houseAmount.grid(row=0, column=1, padx=(0, 2), pady=30, sticky="w")
+        # row 0: House Amount and Interest Rate (spanning all columns)
+        topRow = tk.Frame(mortFrame, bg='white')
+        topRow.grid(row=0, column=0, columnspan=3, pady=30, sticky="ew")
+        
+        houseAmountLabel = tk.Label(topRow, text="House Amount:", font=('Times New Roman', 20), bg='white')
+        houseAmountLabel.pack(side="left", padx=(50, 5))
 
-        houseAmountCurrency = tk.Label(mortFrame, text="$", font=('Times New Roman', 20), bg='white')
-        houseAmountCurrency.grid(row=0, column=1, padx=(0, 50), pady=30, sticky="e")
+        houseAmountCurrency = tk.Label(topRow, text="$", font=('Times New Roman', 20), bg='white')
+        houseAmountCurrency.pack(side="left")
 
-        interestRateLabel = tk.Label(mortFrame, text="Interest Rate:", font=('Times New Roman', 20), bg='white', anchor="e")
-        interestRateLabel.grid(row=0, column=2, padx=(50, 5), pady=30, sticky="e")
+        houseAmount = tk.Entry(topRow, font=('Times New Roman', 20), highlightbackground='black', highlightcolor='black', highlightthickness='2', width=15)
+        houseAmount.pack(side="left", padx=(0, 50))
 
-        interestRate = tk.Entry(mortFrame, font=('Times New Roman', 20), highlightbackground='black', highlightcolor='black', highlightthickness='2', width=10)
-        interestRate.grid(row=0, column=3, padx=(0, 2), pady=30, sticky="w")
+        interestRateLabel = tk.Label(topRow, text="Interest Rate:", font=('Times New Roman', 20), bg='white')
+        interestRateLabel.pack(side="left", padx=(50, 5))
 
-        interestRateCurrency = tk.Label(mortFrame, text="%", font=('Times New Roman', 20), bg='white')
-        interestRateCurrency.grid(row=0, column=3, padx=(0, 50), pady=30, sticky="e")
+        interestRateCurrency = tk.Label(topRow, text="%", font=('Times New Roman', 20), bg='white')
+        interestRateCurrency.pack(side="left")
+
+        interestRate = tk.Entry(topRow, font=('Times New Roman', 20), highlightbackground='black', highlightcolor='black', highlightthickness='2', width=10)
+        interestRate.pack(side="left", padx=(0, 50))
 
         options = []
 
-        # fix the layout of the following
-        # it does not look good at all
-
-
         # Option 1
-        downPaymentLabel1 = tk.Label(mortFrame, text="Down Payment:", font=('Times New Roman', 16), bg='white', justify="left")
-        downPaymentLabel1.grid(row=1, column=0, padx=25, pady=(15, 5), sticky="w")
-
-        percentLabel1 = tk.Label(mortFrame, text="%", font=('Times New Roman', 16), bg='white')
-        percentLabel1.grid(row=2, column=0, padx=(25, 2), pady=5, sticky="e")
-        downPaymentPercent1 = tk.Entry(mortFrame, width=10, font=('Times New Roman', 16), highlightbackground='black', highlightcolor='black', highlightthickness='2')
-        downPaymentPercent1.grid(row=2, column=1, padx=(2, 10), pady=5, sticky="w")
-
-        dollarLabel1 = tk.Label(mortFrame, text="$", font=('Times New Roman', 16), bg='white')
-        dollarLabel1.grid(row=3, column=0, padx=(25, 2), pady=5, sticky="e")
-        downPaymentValue1 = tk.Entry(mortFrame, width=10, font=('Times New Roman', 16), highlightbackground='black', highlightcolor='black', highlightthickness='2')
-        downPaymentValue1.grid(row=3, column=1, padx=(2, 10), pady=5, sticky="w")
+        downPaymentFrame1 = tk.Frame(mortFrame, bg='white')
+        downPaymentFrame1.grid(row=1, column=0, padx=25, pady=(15, 5), sticky="ew")
+        
+        downPaymentLabel1 = tk.Label(downPaymentFrame1, text="Down Payment:", font=('Times New Roman', 16), bg='white')
+        downPaymentLabel1.pack(side="left", padx=(0, 10))
+        
+        dollarLabel1 = tk.Label(downPaymentFrame1, text="$", font=('Times New Roman', 16), bg='white')
+        dollarLabel1.pack(side="left")
+        downPaymentValue1 = tk.Entry(downPaymentFrame1, width=8, font=('Times New Roman', 16), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+        downPaymentValue1.pack(side="left", padx=(0, 10))
+        
+        percentLabel1 = tk.Label(downPaymentFrame1, text="%", font=('Times New Roman', 16), bg='white')
+        percentLabel1.pack(side="left")
+        downPaymentPercent1 = tk.Entry(downPaymentFrame1, width=8, font=('Times New Roman', 16), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+        downPaymentPercent1.pack(side="left")
 
         amortizationPeriod1 = StringVar(mortFrame)
         amortizationPeriod1.set("Amortization Period")
         amortizationPeriodMenu1 = OptionMenu(mortFrame, amortizationPeriod1, *[f"{y} Years" for y in range(1, 31)])
-        amortizationPeriodMenu1.grid(row=4, column=0, padx=25, pady=5, sticky="ew")
+        amortizationPeriodMenu1.grid(row=2, column=0, padx=25, pady=5, sticky="ew")
 
         paymentFrequency1 = StringVar(mortFrame)
         paymentFrequency1.set("Payment Frequency")
         paymentFrequencyMenu1 = OptionMenu(mortFrame, paymentFrequency1, "Weekly", "Monthly", "Annually")
-        paymentFrequencyMenu1.grid(row=5, column=0, padx=25, pady=5, sticky="ew")
+        paymentFrequencyMenu1.grid(row=3, column=0, padx=25, pady=5, sticky="ew")
 
         totalAmountLabel1 = tk.Label(mortFrame, text="Total Amount: $ 0.00", font=('Times New Roman', 18), bg='white')
-        totalAmountLabel1.grid(row=6, column=0, padx=25, pady=5)
+        totalAmountLabel1.grid(row=4, column=0, padx=25, pady=5)
 
         insuranceLabel1 = tk.Label(mortFrame, text="Insurance: $ 0.00", font=('Times New Roman', 18), bg='white')
-        insuranceLabel1.grid(row=7, column=0, padx=25, pady=5)
+        insuranceLabel1.grid(row=5, column=0, padx=25, pady=5)
 
         paymentLabel1 = tk.Label(mortFrame, text="Payment: $ 0.00", font=('Times New Roman', 20), bg='white')
-        paymentLabel1.grid(row=8, column=0, padx=25, pady=5)
+        paymentLabel1.grid(row=6, column=0, padx=25, pady=5)
 
         options.append({"downPaymentPercent": downPaymentPercent1, "downPaymentValue": downPaymentValue1, "amortizationPeriod": amortizationPeriod1, "paymentFrequency": paymentFrequency1,
                         "totalAmountLabel": totalAmountLabel1, "insuranceLabel": insuranceLabel1, "paymentLabel": paymentLabel1})
 
-
         # Option 2
-        downPaymentLabel2 = tk.Label(mortFrame, text="Down Payment:", font=('Times New Roman', 16), bg='white', justify="left")
-        downPaymentLabel2.grid(row=1, column=1, padx=25, pady=(15, 5), sticky="w")
-
-        percentLabel2 = tk.Label(mortFrame, text="%", font=('Times New Roman', 16), bg='white')
-        percentLabel2.grid(row=2, column=1, padx=(25, 2), pady=5, sticky="e")
-        downPaymentPercent2 = tk.Entry(mortFrame, width=10, font=('Times New Roman', 16), highlightbackground='black', highlightcolor='black', highlightthickness='2')
-        downPaymentPercent2.grid(row=2, column=2, padx=(2, 10), pady=5, sticky="w")
-
-        dollarLabel2 = tk.Label(mortFrame, text="$", font=('Times New Roman', 16), bg='white')
-        dollarLabel2.grid(row=3, column=1, padx=(25, 2), pady=5, sticky="e")
-        downPaymentValue2 = tk.Entry(mortFrame, width=10, font=('Times New Roman', 16), highlightbackground='black', highlightcolor='black', highlightthickness='2')
-        downPaymentValue2.grid(row=3, column=2, padx=(2, 10), pady=5, sticky="w")
+        downPaymentFrame2 = tk.Frame(mortFrame, bg='white')
+        downPaymentFrame2.grid(row=1, column=1, padx=25, pady=(15, 5), sticky="ew")
+        
+        downPaymentLabel2 = tk.Label(downPaymentFrame2, text="Down Payment:", font=('Times New Roman', 16), bg='white')
+        downPaymentLabel2.pack(side="left", padx=(0, 10))
+        
+        dollarLabel2 = tk.Label(downPaymentFrame2, text="$", font=('Times New Roman', 16), bg='white')
+        dollarLabel2.pack(side="left")
+        downPaymentValue2 = tk.Entry(downPaymentFrame2, width=8, font=('Times New Roman', 16), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+        downPaymentValue2.pack(side="left", padx=(0, 10))
+        
+        percentLabel2 = tk.Label(downPaymentFrame2, text="%", font=('Times New Roman', 16), bg='white')
+        percentLabel2.pack(side="left")
+        downPaymentPercent2 = tk.Entry(downPaymentFrame2, width=8, font=('Times New Roman', 16), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+        downPaymentPercent2.pack(side="left")
 
         amortizationPeriod2 = StringVar(mortFrame)
         amortizationPeriod2.set("Amortization Period")
         amortizationPeriodMenu2 = OptionMenu(mortFrame, amortizationPeriod2, *[f"{y} Years" for y in range(1, 31)])
-        amortizationPeriodMenu2.grid(row=4, column=1, columnspan=2, padx=25, pady=5, sticky="ew")
+        amortizationPeriodMenu2.grid(row=2, column=1, padx=25, pady=5, sticky="ew")
 
         paymentFrequency2 = StringVar(mortFrame)
         paymentFrequency2.set("Payment Frequency")
         paymentFrequencyMenu2 = OptionMenu(mortFrame, paymentFrequency2, "Weekly", "Monthly", "Annually")
-        paymentFrequencyMenu2.grid(row=5, column=1, columnspan=2, padx=25, pady=5, sticky="ew")
+        paymentFrequencyMenu2.grid(row=3, column=1, padx=25, pady=5, sticky="ew")
 
         totalAmountLabel2 = tk.Label(mortFrame, text="Total Amount: $ 0.00", font=('Times New Roman', 18), bg='white')
-        totalAmountLabel2.grid(row=6, column=1, columnspan=2, padx=25, pady=5)
+        totalAmountLabel2.grid(row=4, column=1, padx=25, pady=5)
 
         insuranceLabel2 = tk.Label(mortFrame, text="Insurance: $ 0.00", font=('Times New Roman', 18), bg='white')
-        insuranceLabel2.grid(row=7, column=1, columnspan=2, padx=25, pady=5)
+        insuranceLabel2.grid(row=5, column=1, padx=25, pady=5)
 
         paymentLabel2 = tk.Label(mortFrame, text="Payment: $ 0.00", font=('Times New Roman', 20), bg='white')
-        paymentLabel2.grid(row=8, column=1, columnspan=2, padx=25, pady=5)
+        paymentLabel2.grid(row=6, column=1, padx=25, pady=5)
 
         options.append({"downPaymentPercent": downPaymentPercent2, "downPaymentValue": downPaymentValue2, "amortizationPeriod": amortizationPeriod2, "paymentFrequency": paymentFrequency2,
                         "totalAmountLabel": totalAmountLabel2, "insuranceLabel": insuranceLabel2, "paymentLabel": paymentLabel2})
 
-
         # Option 3
-        downPaymentLabel3 = tk.Label(mortFrame, text="Down Payment:", font=('Times New Roman', 16), bg='white', justify="left")
-        downPaymentLabel3.grid(row=1, column=3, padx=25, pady=(15, 5), sticky="w")
-
-        percentLabel3 = tk.Label(mortFrame, text="%", font=('Times New Roman', 16), bg='white')
-        percentLabel3.grid(row=2, column=3, padx=(25, 2), pady=5, sticky="e")
-        downPaymentPercent3 = tk.Entry(mortFrame, width=10, font=('Times New Roman', 16), highlightbackground='black', highlightcolor='black', highlightthickness='2')
-        downPaymentPercent3.grid(row=2, column=4, padx=(2, 10), pady=5, sticky="w")
-
-        dollarLabel3 = tk.Label(mortFrame, text="$", font=('Times New Roman', 16), bg='white')
-        dollarLabel3.grid(row=3, column=3, padx=(25, 2), pady=5, sticky="e")
-        downPaymentValue3 = tk.Entry(mortFrame, width=10, font=('Times New Roman', 16), highlightbackground='black', highlightcolor='black', highlightthickness='2')
-        downPaymentValue3.grid(row=3, column=4, padx=(2, 10), pady=5, sticky="w")
+        downPaymentFrame3 = tk.Frame(mortFrame, bg='white')
+        downPaymentFrame3.grid(row=1, column=2, padx=25, pady=(15, 5), sticky="ew")
+        
+        downPaymentLabel3 = tk.Label(downPaymentFrame3, text="Down Payment:", font=('Times New Roman', 16), bg='white')
+        downPaymentLabel3.pack(side="left", padx=(0, 10))
+        
+        dollarLabel3 = tk.Label(downPaymentFrame3, text="$", font=('Times New Roman', 16), bg='white')
+        dollarLabel3.pack(side="left")
+        downPaymentValue3 = tk.Entry(downPaymentFrame3, width=8, font=('Times New Roman', 16), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+        downPaymentValue3.pack(side="left", padx=(0, 10))
+        
+        percentLabel3 = tk.Label(downPaymentFrame3, text="%", font=('Times New Roman', 16), bg='white')
+        percentLabel3.pack(side="left")
+        downPaymentPercent3 = tk.Entry(downPaymentFrame3, width=8, font=('Times New Roman', 16), highlightbackground='black', highlightcolor='black', highlightthickness='2')
+        downPaymentPercent3.pack(side="left")
 
         amortizationPeriod3 = StringVar(mortFrame)
         amortizationPeriod3.set("Amortization Period")
         amortizationPeriodMenu3 = OptionMenu(mortFrame, amortizationPeriod3, *[f"{y} Years" for y in range(1, 31)])
-        amortizationPeriodMenu3.grid(row=4, column=3, padx=25, pady=5, sticky="ew")
+        amortizationPeriodMenu3.grid(row=2, column=2, padx=25, pady=5, sticky="ew")
 
         paymentFrequency3 = StringVar(mortFrame)
         paymentFrequency3.set("Payment Frequency")
         paymentFrequencyMenu3 = OptionMenu(mortFrame, paymentFrequency3, "Weekly", "Monthly", "Annually")
-        paymentFrequencyMenu3.grid(row=5, column=3, padx=25, pady=5, sticky="ew")
+        paymentFrequencyMenu3.grid(row=3, column=2, padx=25, pady=5, sticky="ew")
 
         totalAmountLabel3 = tk.Label(mortFrame, text="Total Amount: $ 0.00", font=('Times New Roman', 18), bg='white')
-        totalAmountLabel3.grid(row=6, column=3, padx=25, pady=5)
+        totalAmountLabel3.grid(row=4, column=2, padx=25, pady=5)
 
         insuranceLabel3 = tk.Label(mortFrame, text="Insurance: $ 0.00", font=('Times New Roman', 18), bg='white')
-        insuranceLabel3.grid(row=7, column=3, padx=25, pady=5)
+        insuranceLabel3.grid(row=5, column=2, padx=25, pady=5)
 
         paymentLabel3 = tk.Label(mortFrame, text="Payment: $ 0.00", font=('Times New Roman', 20), bg='white')
-        paymentLabel3.grid(row=8, column=3, padx=25, pady=5)
+        paymentLabel3.grid(row=6, column=2, padx=25, pady=5)
 
         options.append({"downPaymentPercent": downPaymentPercent3, "downPaymentValue": downPaymentValue3, "amortizationPeriod": amortizationPeriod3, "paymentFrequency": paymentFrequency3,
                         "totalAmountLabel": totalAmountLabel3, "insuranceLabel": insuranceLabel3, "paymentLabel": paymentLabel3})
 
         calculateButton = tk.Button(mortFrame, text="Calculate", font=('Times New Roman', 20), command=lambda: calculate())
-        calculateButton.grid(row=9, column=0, columnspan=4, padx=25, pady=30, sticky="ew")
+        calculateButton.grid(row=7, column=0, columnspan=3, padx=25, pady=30, sticky="ew")
 
         backButton(mortFrame, lambda: loanScreen(root, mainScreen, frames, backButton, loanCalc, mortgageCalc))
 
@@ -167,7 +176,7 @@ def mortgageCalc(root, mainScreen, frames, backButton, loanScreen, loanCalc, mor
                 try:
                     userDownPaymentPercent = float(opt["downPaymentPercent"].get().replace(",", "").strip() or 0)
                     userDownPaymentValue = float(opt["downPaymentValue"].get().replace(",", "").strip() or 0)
-                except valueError:
+                except ValueError:
                     messagebox.showerror('Input Error', 'Error: Please Enter a Valid Number')
                     continue
 
